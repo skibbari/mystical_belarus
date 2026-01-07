@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маршруты - Mystical Belarus</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1a0b2e 100%);
+            color: #e6e6fa; 
+            line-height: 1.5; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* УМЕНЬШЕННАЯ ШАПКА */
+        header {
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+            padding: 1rem; 
+            text-align: center; 
+            position: relative;
+            box-shadow: 0 2px 10px rgba(74, 44, 122, 0.3);
+        }
+        .header-content {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            max-width: 1200px; 
+            margin: 0 auto 1rem; 
+            position: relative;
+        }
+        .logo { 
+            height: 80px; 
+            width: auto; 
+        }
+        .language-switcher {
+            display: flex; 
+            gap: 0.3rem; 
+            position: absolute;
+            left: 50%; 
+            transform: translateX(-50%);
+        }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid #8a6bb8;
+            color: #d8c7ff; 
+            padding: 0.3rem 0.8rem; 
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 0.8rem;
+            transition: all 0.3s ease; 
+            border-radius: 15px;
+        }
+        .lang-btn.active { 
+            background: #8a6bb8; 
+            border-color: #8a6bb8; 
+            color: #fff; 
+        }
+        
+        /* ИКОНКА ПОЛЬЗОВАТЕЛЯ И ВЫПАДАЮЩЕЕ МЕНЮ */
+        .user-icon { 
+            color: #d8c7ff; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            padding: 0.3rem; 
+            width: 32px; 
+            height: 32px;
+            position: relative;
+        }
+        .user-icon.logged-in {
+            color: #8a6bb8;
+        }
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(42, 21, 85, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            border-radius: 8px;
+            padding: 0.5rem;
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+        .user-dropdown.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .user-info {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .user-email {
+            font-size: 0.8rem;
+            color: #b8a9d9;
+            margin-top: 0.2rem;
+        }
+        .user-dropdown-divider {
+            height: 1px;
+            background: rgba(138, 107, 184, 0.3);
+            margin: 0.5rem 0;
+        }
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            color: #d8c7ff;
+            text-decoration: none;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .user-dropdown-item:hover {
+            background: rgba(138, 107, 184, 0.3);
+            color: #fff;
+        }
+        .user-dropdown-item i {
+            width: 16px;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.2rem; 
+            color: #fff;
+            margin-bottom: 0.5rem; 
+            font-weight: 600; 
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle { 
+            font-size: 0.9rem; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            color: #d8c7ff; 
+            line-height: 1.4; 
+        }
+        
+        /* КОМПАКТНАЯ НАВИГАЦИЯ */
+        .main-nav {
+            display: flex; 
+            justify-content: center; 
+            gap: 1rem; 
+            padding: 0.8rem;
+            background: rgba(42, 21, 85, 0.9); 
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .nav-btn {
+            color: #e6e6fa; 
+            text-decoration: none; 
+            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem; 
+            border: 1px solid transparent; 
+            border-radius: 20px;
+            transition: all 0.3s ease; 
+            font-weight: 500;
+        }
+        .nav-btn:hover { 
+            background: rgba(138, 107, 184, 0.3); 
+            border-color: #8a6bb8; 
+            color: #fff;
+            box-shadow: 0 0 15px rgba(138, 107, 184, 0.5);
+        }
+        .profile-nav-btn {
+            background: rgba(138, 107, 184, 0.2);
+            border: 1px solid #8a6bb8;
+        }
+        
+        /* ОСНОВНОЙ КОНТЕНТ */
+        main { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 1.5rem 1rem;
+            flex: 1;
+        }
+        
+        /* ПРОСТАЯ ФИЛЬТРАЦИЯ - 2 КНОПКИ */
+        .simple-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(42, 21, 85, 0.6);
+            border-radius: 12px;
+            justify-content: center;
+            border: 1px solid rgba(138, 107, 184, 0.3);
+        }
+        
+        .simple-filter-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            border-radius: 25px;
+            color: #d8c7ff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 180px;
+        }
+        
+        .simple-filter-btn.active {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            border-color: #8a6bb8;
+            color: white;
+            box-shadow: 0 0 15px rgba(138, 107, 184, 0.5);
+        }
+        
+        .simple-filter-btn:hover {
+            background: rgba(138, 107, 184, 0.3);
+            border-color: #8a6bb8;
+        }
+        
+        /* КНОПКА ДОБАВЛЕНИЯ МАРШРУТА */
+        .add-route-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(42, 21, 85, 0.6);
+            border-radius: 15px;
+            border: 2px dashed rgba(138, 107, 184, 0.5);
+        }
+        .add-route-btn {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+        .add-route-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(138, 107, 184, 0.4);
+            background: linear-gradient(135deg, #9a7bc8 0%, #8e67d2 100%);
+        }
+        .add-route-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        /* ФОРМА ДОБАВЛЕНИЯ/РЕДАКТИРОВАНИЯ МАРШРУТА */
+        .add-route-form {
+            display: none;
+            background: rgba(42, 21, 85, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .add-route-form.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d8c7ff;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8a6bb8;
+            box-shadow: 0 0 0 2px rgba(138, 107, 184, 0.2);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        /* ЗАГРУЗКА ФОТО */
+        .image-upload-container {
+            margin-bottom: 1.5rem;
+        }
+        .image-upload-area {
+            border: 2px dashed rgba(138, 107, 184, 0.5);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .image-upload-area:hover {
+            border-color: #8a6bb8;
+            background: rgba(138, 107, 184, 0.1);
+        }
+        .image-upload-area.dragover {
+            border-color: #8a6bb8;
+            background: rgba(138, 107, 184, 0.2);
+            transform: scale(1.02);
+        }
+        .upload-icon {
+            font-size: 3rem;
+            color: #8a6bb8;
+            margin-bottom: 1rem;
+        }
+        .upload-text {
+            color: #d8c7ff;
+            margin-bottom: 0.5rem;
+        }
+        .upload-hint {
+            color: #b8a9d9;
+            font-size: 0.9rem;
+        }
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid rgba(138, 107, 184, 0.3);
+        }
+        .remove-image-btn {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .remove-image-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+        }
+        
+        /* СТИЛИ ДЛЯ МАРШРУТОВ */
+        .route-item {
+            margin-bottom: 2.5rem; 
+            padding: 1.5rem; 
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px; 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            display: block !important; /* Важно: всегда block для сохранения размеров */
+            opacity: 1;
+            visibility: visible;
+            height: auto;
+            overflow: hidden;
+        }
+        .route-item.hidden {
+            display: block !important;
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+            overflow: hidden;
+        }
+        .route-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(138, 107, 184, 0.3);
+        }
+        
+        .user-route {
+            border-left: 4px solid #8a6bb8;
+            background: rgba(138, 107, 184, 0.05);
+        }
+        
+        .user-route-badge {
+            background: #8a6bb8;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .route-item h2 {
+            color: #fff; 
+            margin-bottom: 1rem; 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.6rem;
+        }
+        
+        .route-points {
+            margin-bottom: 1.2rem;
+        }
+        
+        .route-main-points {
+            color: #8a6bb8;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .route-content {
+            display: flex; 
+            gap: 1.5rem; 
+            align-items: flex-start; 
+            margin-bottom: 1rem;
+        }
+        
+        .route-image {
+            flex: 0 0 300px; 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 10px;
+        }
+        
+        .route-image img {
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .route-image img:hover {
+            transform: scale(1.05);
+        }
+        
+        .route-text { 
+            flex: 1; 
+        }
+        
+        .route-text p { 
+            color: #d8c7ff; 
+            line-height: 1.5; 
+            margin-bottom: 1rem; 
+            font-size: 0.95rem; 
+        }
+        
+        /* КНОПКИ РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ В КАРТОЧКЕ */
+        .route-card-actions {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .route-item:hover .route-card-actions {
+            opacity: 1;
+        }
+        
+        .route-card-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .edit-card-btn {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+        }
+        
+        .edit-card-btn:hover {
+            background: rgba(76, 175, 80, 0.4);
+            border-color: #4CAF50;
+            transform: scale(1.1);
+        }
+        
+        .delete-card-btn {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+        
+        .delete-card-btn:hover {
+            background: rgba(244, 67, 54, 0.4);
+            border-color: #f44336;
+            transform: scale(1.1);
+        }
+        
+        /* КНОПКИ РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ В ДЕТАЛЯХ */
+        .route-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.2);
+        }
+        
+        .route-action-btn {
+            background: linear-gradient(135deg, rgba(138, 107, 184, 0.1) 0%, rgba(126, 87, 194, 0.1) 100%);
+            border: 1px solid rgba(138, 107, 184, 0.4);
+            color: #d8c7ff;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .route-action-btn.edit:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(56, 142, 60, 0.2) 100%);
+            border-color: #4CAF50;
+            color: #4CAF50;
+            transform: translateY(-2px);
+        }
+        
+        .route-action-btn.delete:hover {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.2) 0%, rgba(211, 47, 47, 0.2) 100%);
+            border-color: #f44336;
+            color: #f44336;
+            transform: translateY(-2px);
+        }
+        
+        /* КНОПКИ */
+        .details-btn, .collapse-btn, .form-btn {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%); 
+            color: white; 
+            border: none; 
+            padding: 0.8rem 1.5rem; 
+            cursor: pointer; 
+            border-radius: 25px; 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 0.9rem; 
+            transition: all 0.3s ease; 
+            font-weight: 500;
+            position: relative; 
+            overflow: hidden;
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid #8a6bb8;
+            color: #d8c7ff;
+        }
+        
+        .danger-btn {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+        
+        .details-btn:hover, .collapse-btn:hover, .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 15px rgba(138, 107, 184, 0.4),
+                0 0 20px rgba(138, 107, 184, 0.3),
+                0 0 30px rgba(138, 107, 184, 0.2);
+            background: linear-gradient(135deg, #9a7bc8 0%, #8e67d2 100%);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(138, 107, 184, 0.1);
+        }
+        
+        .danger-btn:hover {
+            background: linear-gradient(135deg, #ff5252 0%, #ff1744 100%);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+        }
+        
+        .details-content {
+            margin-top: 1.5rem; 
+            padding: 1.5rem; 
+            background: rgba(42, 21, 85, 0.6);
+            border-radius: 12px; 
+            border-left: 3px solid #8a6bb8;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .route-detail-section {
+            margin-bottom: 2rem; 
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+        }
+        
+        .route-detail-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .route-detail-section h3 {
+            color: #fff; 
+            margin-bottom: 1rem; 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.3rem;
+        }
+        
+        .route-detail-section p { 
+            color: #d8c7ff; 
+            line-height: 1.5; 
+            margin-bottom: 1rem; 
+            font-size: 0.95rem; 
+        }
+        
+        .detail-image {
+            width: 100%; 
+            margin-bottom: 1rem; 
+            border-radius: 8px; 
+            overflow: hidden;
+        }
+        
+        .detail-image img {
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a0b2e 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #d8c7ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(138, 107, 184, 0.2);
+            color: #fff;
+        }
+        
+        .modal h2 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 0.8rem;
+            background: none;
+            border: none;
+            color: #d8c7ff;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-tab.active {
+            color: #8a6bb8;
+            border-bottom: 2px solid #8a6bb8;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .auth-form input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+        }
+        
+        .auth-form input:focus {
+            outline: none;
+            border-color: #8a6bb8;
+            box-shadow: 0 0 0 2px rgba(138, 107, 184, 0.2);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-btn:hover {
+            background: linear-gradient(135deg, #9a7bc8 0%, #8e67d2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 107, 184, 0.4);
+        }
+        
+        /* УВЕДОМЛЕНИЯ */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(42, 21, 85, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            max-width: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .notification.error {
+            border-left: 4px solid #f44336;
+        }
+        
+        .notification.warning {
+            border-left: 4px solid #ff9800;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex: 1;
+        }
+        
+        .notification-content i {
+            font-size: 1.2rem;
+        }
+        
+        .notification.success .notification-content i {
+            color: #4CAF50;
+        }
+        
+        .notification.error .notification-content i {
+            color: #f44336;
+        }
+        
+        .notification.warning .notification-content i {
+            color: #ff9800;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: #d8c7ff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            margin-left: 1rem;
+        }
+        
+        /* ПОДВАЛ БЕЗ КНОПОК СОЦСЕТЕЙ */
+        footer {
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+            padding: 3rem 1rem 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.3);
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo-img {
+            height: 50px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .footer-description {
+            color: #b8a9d9;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 300px;
+        }
+        
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: #8a6bb8;
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .footer-link {
+            color: #b8a9d9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-link:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+        
+        .footer-link i {
+            width: 16px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #b8a9d9;
+            font-size: 0.9rem;
+        }
+        
+        .contact-item i {
+            width: 16px;
+            text-align: center;
+            color: #8a6bb8;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .copyright {
+            color: #8a6bb8;
+            font-size: 0.8rem;
+        }
+        
+        .back-to-top {
+            background: rgba(138, 107, 184, 0.2);
+            border: 1px solid #8a6bb8;
+            color: #d8c7ff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-to-top:hover {
+            background: #8a6bb8;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        /* КОНФИРМАЦИОННОЕ МОДАЛЬНОЕ ОКНО */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2100;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-modal.active {
+            display: flex;
+        }
+        .confirm-content {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a0b2e 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(138, 107, 184, 0.5);
+            text-align: center;
+        }
+        .confirm-content h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .confirm-content p {
+            color: #d8c7ff;
+            margin-bottom: 2rem;
+        }
+        .confirm-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .header-content { 
+                flex-direction: column; 
+                gap: 0.8rem; 
+            }
+            .language-switcher { 
+                position: static; 
+                transform: none; 
+            }
+            .main-title { 
+                font-size: 1.8rem; 
+            }
+            .logo { 
+                height: 60px; 
+            }
+            .main-nav { 
+                flex-wrap: wrap; 
+                gap: 0.5rem; 
+                padding: 0.6rem; 
+            }
+            .nav-btn { 
+                padding: 0.5rem 1rem; 
+                font-size: 0.8rem; 
+            }
+            .simple-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+            .simple-filter-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .route-content { 
+                flex-direction: column; 
+                gap: 1rem; 
+            }
+            .route-image { 
+                flex: 0 0 auto; 
+                width: 100%; 
+            }
+            .route-image img { 
+                height: 200px; 
+            }
+            .route-item h2 {
+                font-size: 1.4rem;
+            }
+            .route-card-actions {
+                opacity: 1;
+                top: 1rem;
+                right: 1rem;
+            }
+            .route-actions {
+                flex-direction: column;
+            }
+            .route-action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .footer-brand {
+                align-items: center;
+            }
+            
+            .footer-logo {
+                justify-content: center;
+            }
+            
+            .footer-heading::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .form-btn {
+                width: 100%;
+            }
+            .route-card-actions {
+                position: static;
+                margin-bottom: 1rem;
+                justify-content: flex-start;
+            }
+            .route-card-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html"><img src="1.png" alt="Логотип Mystical Belarus" class="logo"></a>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="ru">Рус</button>
+                <button class="lang-btn" data-lang="by">Бел</button>
+                <button class="lang-btn" data-lang="en">Eng</button>
+            </div>
+            <div class="user-icon" id="userIcon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M20 22C20 17.5817 16.4183 14 12 14C7.58172 14 4 17.5817 4 22H20Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <div class="user-dropdown" id="userDropdown">
+                    <!-- Контент будет заполняться динамически -->
+                </div>
+            </div>
+        </div>
+        <h1 class="main-title">Маршруты</h1>
+        <p class="subtitle">Откройте для себя лучшие дороги Беларуси! В этом разделе мы собрали тщательно продуманные маршруты, которые проведут вас через самые живописные уголки страны. Ваше идеальное путешествие начинается здесь!</p>
+    </header>
+
+    <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-btn">Главная</a>
+        <a href="legends.html" class="nav-btn">Легенды</a>
+        <a href="blog.html" class="nav-btn">Блог</a>
+        <a href="quizzes.html" class="nav-btn">Викторины</a>
+        <a href="routes.html" class="nav-btn">Маршруты</a>
+        <!-- Кнопка профиля будет добавлена динамически -->
+    </nav>
+
+    <main>
+        <!-- Простая фильтрация - 2 кнопки -->
+        <div class="simple-filter">
+            <button class="simple-filter-btn active" id="filterAll">Все маршруты</button>
+            <button class="simple-filter-btn" id="filterUser">Маршруты пользователей</button>
+        </div>
+
+        <!-- Секция для добавления маршрута -->
+        <section class="add-route-section" id="addRouteSection" style="display: none;">
+            <button class="add-route-btn" id="addRouteBtn">
+                <i class="fas fa-plus-circle"></i> Добавить маршрут
+            </button>
+            
+            <div class="add-route-form" id="addRouteForm">
+                <input type="hidden" id="routeId" value="">
+                <input type="hidden" id="editMode" value="false">
+                
+                <div class="form-group">
+                    <label for="routeName">Название маршрута *</label>
+                    <input type="text" id="routeName" placeholder="Введите название маршрута" required>
+                </div>
+                <div class="form-group">
+                    <label for="routePoints">Основные точки маршрута *</label>
+                    <input type="text" id="routePoints" placeholder="Например: Минск — Мир — Несвиж — Минск" required>
+                </div>
+                
+                <div class="form-group image-upload-container">
+                    <label>Фотография маршрута</label>
+                    <div class="image-upload-area" id="imageUploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Нажмите или перетащите фото</div>
+                        <div class="upload-hint">Поддерживаемые форматы: JPG, PNG (макс. 5MB)</div>
+                        <input type="file" id="routeImageFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-preview" id="imagePreview">
+                        <img id="previewImage" src="" alt="Предпросмотр">
+                        <button type="button" class="remove-image-btn" id="removeImageBtn">
+                            <i class="fas fa-trash"></i> Удалить фото
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="routeDescription">Описание маршрута *</label>
+                    <textarea id="routeDescription" placeholder="Подробное описание вашего маршрута..." required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="form-btn secondary-btn" id="cancelRouteBtn">Отмена</button>
+                    <button type="button" class="form-btn" id="saveRouteBtn">Сохранить маршрут</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Общий контейнер для всех маршрутов -->
+        <div id="allRoutesContainer">
+            <!-- Предустановленные и пользовательские маршруты будут загружены сюда -->
+        </div>
+    </main>
+
+    <!-- Модальное окно для входа/регистрации -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Вход в систему</h2>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Вход</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            
+            <form class="auth-form active" id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="auth-btn">Войти</button>
+            </form>
+            
+            <form class="auth-form" id="register-form">
+                <input type="text" id="register-name" placeholder="Имя" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Пароль (минимум 6 символов)" required>
+                <input type="password" id="register-password-confirm" placeholder="Подтвердите пароль" required>
+                <button type="submit" class="auth-btn">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="confirm-modal" id="confirmDeleteModal">
+        <div class="confirm-content">
+            <h3>Удалить маршрут?</h3>
+            <p>Вы уверены, что хотите удалить этот маршрут? Это действие нельзя отменить.</p>
+            <div class="confirm-actions">
+                <button class="form-btn secondary-btn" id="cancelDeleteBtn">Отмена</button>
+                <button class="form-btn danger-btn" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Бренд и описание -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="1.png" alt="Mystical Belarus" class="footer-logo-img">
+                    <div class="footer-brand-text">
+                        <h3 class="footer-title">Mystical Belarus</h3>
+                        <p class="footer-description">
+                            Откройте тайную сторону Беларуси. Исследуйте легенды, 
+                            загадочные места и мистические истории нашей страны.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Навигация -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Навигация</h4>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">
+                        <i class="fas fa-home"></i>Главная
+                    </a>
+                    <a href="legends.html" class="footer-link">
+                        <i class="fas fa-ghost"></i>Легенды
+                    </a>
+                    <a href="routes.html" class="footer-link">
+                        <i class="fas fa-route"></i>Маршруты
+                    </a>
+                    <a href="blog.html" class="footer-link">
+                        <i class="fas fa-blog"></i>Блог
+                    </a>
+                    <a href="quizzes.html" class="footer-link">
+                        <i class="fas fa-puzzle-piece"></i>Викторины
+                    </a>
+                </div>
+            </div>
+
+            <!-- Контакты -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Контакты</h4>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@mystical-belarus.by</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+375 (29) 123-45-67</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Минск, Беларусь</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Пн-Пт: 9:00-18:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2025 Mystical Belarus. Все права защищены.
+            </div>
+            <a href="#" class="back-to-top">
+                <i class="fas fa-arrow-up"></i>Наверх
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Система управления пользователями с расширенными функциями
+        class UserSystem {
+            constructor() {
+                this.usersKey = 'mysticalBelarusUsers';
+                this.routesKey = 'mysticalBelarusRoutes';
+                this.currentUser = null;
+                this.editingRouteId = null;
+                this.routeImageData = null;
+                this.routeToDelete = null;
+                this.currentFilter = 'all'; // 'all' или 'user'
+                this.init();
+            }
+
+            init() {
+                // Проверяем авторизацию из localStorage
+                const savedUser = localStorage.getItem('mysticalBelarusCurrentUser');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.updateUIAfterLogin();
+                }
+                
+                this.setupEventListeners();
+                this.setupAuthEventListeners();
+                this.setupRouteFormListeners();
+                this.setupImageUploadListeners();
+                this.setupDemoData();
+                this.setupDefaultRoutes();
+                this.setupSimpleFiltering();
+                
+                // Обновляем интерфейс страницы
+                this.updatePageUI();
+            }
+
+            updateUserDropdown() {
+                const dropdown = document.getElementById('userDropdown');
+                if (!dropdown) return;
+                
+                if (this.currentUser) {
+                    dropdown.innerHTML = `
+                        <div class="user-info">
+                            <div class="user-name">${this.currentUser.name}</div>
+                            <div class="user-email">${this.currentUser.email}</div>
+                        </div>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="profile.html" class="user-dropdown-item">
+                            <i class="fas fa-user"></i>Мой профиль
+                        </a>
+                        <button class="user-dropdown-item" id="logout-dropdown-btn">
+                            <i class="fas fa-sign-out-alt"></i>Выйти
+                        </button>
+                    `;
+                    
+                    // Добавляем обработчики для новых элементов
+                    setTimeout(() => {
+                        const logoutBtn = document.getElementById('logout-dropdown-btn');
+                        
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener('click', () => {
+                                this.logout();
+                                dropdown.classList.remove('show');
+                            });
+                        }
+                    }, 10);
+                } else {
+                    dropdown.innerHTML = `
+                        <button class="user-dropdown-item" id="login-dropdown-btn">
+                            <i class="fas fa-sign-in-alt"></i>Войти / Зарегистрироваться
+                        </button>
+                    `;
+                    
+                    // Добавляем обработчик для кнопки входа
+                    setTimeout(() => {
+                        const loginBtn = document.getElementById('login-dropdown-btn');
+                        if (loginBtn) {
+                            loginBtn.addEventListener('click', () => {
+                                this.openAuthModal();
+                                dropdown.classList.remove('show');
+                            });
+                        }
+                    }, 10);
+                }
+            }
+
+            updateNavigation() {
+                const navContainer = document.getElementById('mainNav');
+                if (!navContainer) return;
+                
+                // Удаляем старую кнопку профиля, если есть
+                const oldProfileBtn = navContainer.querySelector('.profile-nav-btn');
+                if (oldProfileBtn) {
+                    oldProfileBtn.remove();
+                }
+                
+                // Добавляем кнопку "Мой профиль" если пользователь авторизован
+                if (this.currentUser) {
+                    const profileBtn = document.createElement('a');
+                    profileBtn.href = 'profile.html';
+                    profileBtn.className = 'nav-btn profile-nav-btn';
+                    profileBtn.textContent = 'Мой профиль';
+                    navContainer.appendChild(profileBtn);
+                }
+            }
+
+            updateUIAfterLogin() {
+                // Обновляем иконку пользователя
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon) {
+                    userIcon.classList.add('logged-in');
+                }
+                
+                // Обновляем выпадающее меню и навигацию
+                this.updateUserDropdown();
+                this.updateNavigation();
+            }
+
+            setupEventListeners() {
+                // Обработчик для иконки пользователя
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon) {
+                    userIcon.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        
+                        if (this.currentUser) {
+                            // Если пользователь авторизован, показываем выпадающее меню
+                            const dropdown = document.getElementById('userDropdown');
+                            dropdown.classList.toggle('show');
+                        } else {
+                            // Если не авторизован, открываем модальное окно авторизации
+                            this.openAuthModal();
+                        }
+                    });
+                }
+                
+                // Закрытие выпадающего меню при клике вне его
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('userDropdown');
+                    const userIcon = document.getElementById('userIcon');
+                    
+                    if (dropdown && !dropdown.contains(e.target) && userIcon && !userIcon.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            setupAuthEventListeners() {
+                // Переключение вкладок входа/регистрации
+                const authTabs = document.querySelectorAll('.auth-tab');
+                authTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabName = tab.getAttribute('data-tab');
+                        
+                        // Обновляем активную вкладку
+                        authTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        // Показываем соответствующую форму
+                        document.querySelectorAll('.auth-form').forEach(form => {
+                            form.classList.remove('active');
+                        });
+                        document.getElementById(`${tabName}-form`).classList.add('active');
+                    });
+                });
+                
+                // Форма входа
+                const loginForm = document.getElementById('login-form');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.login();
+                    });
+                }
+                
+                // Форма регистрации
+                const registerForm = document.getElementById('register-form');
+                if (registerForm) {
+                    registerForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.register();
+                    });
+                }
+                
+                // Закрытие модальных окон авторизации
+                const authModal = document.getElementById('auth-modal');
+                const closeAuthBtns = document.querySelectorAll('#auth-modal .close-modal');
+                
+                closeAuthBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        authModal.classList.remove('active');
+                    });
+                });
+                
+                // Закрытие модального окна при клике на оверлей
+                window.addEventListener('click', (e) => {
+                    if (e.target === authModal) {
+                        authModal.classList.remove('active');
+                    }
+                });
+            }
+
+            setupRouteFormListeners() {
+                // Кнопка добавления маршрута
+                const addRouteBtn = document.getElementById('addRouteBtn');
+                const addRouteForm = document.getElementById('addRouteForm');
+                const saveRouteBtn = document.getElementById('saveRouteBtn');
+                const cancelRouteBtn = document.getElementById('cancelRouteBtn');
+                
+                if (addRouteBtn) {
+                    addRouteBtn.addEventListener('click', () => {
+                        if (!this.currentUser) {
+                            this.showNotification('Для добавления маршрута необходимо войти в систему', 'error');
+                            this.openAuthModal();
+                            return;
+                        }
+                        
+                        // Сброс формы для создания нового маршрута
+                        this.resetRouteForm();
+                        
+                        if (addRouteForm) {
+                            addRouteForm.classList.toggle('show');
+                        }
+                    });
+                }
+                
+                if (saveRouteBtn) {
+                    saveRouteBtn.addEventListener('click', () => {
+                        this.saveRoute();
+                    });
+                }
+                
+                if (cancelRouteBtn) {
+                    cancelRouteBtn.addEventListener('click', () => {
+                        if (addRouteForm) {
+                            addRouteForm.classList.remove('show');
+                        }
+                        this.resetRouteForm();
+                    });
+                }
+            }
+
+            setupImageUploadListeners() {
+                const imageUploadArea = document.getElementById('imageUploadArea');
+                const routeImageFile = document.getElementById('routeImageFile');
+                const removeImageBtn = document.getElementById('removeImageBtn');
+                
+                if (imageUploadArea) {
+                    // Клик по области загрузки
+                    imageUploadArea.addEventListener('click', () => {
+                        routeImageFile.click();
+                    });
+                    
+                    // Перетаскивание файла
+                    imageUploadArea.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        imageUploadArea.classList.add('dragover');
+                    });
+                    
+                    imageUploadArea.addEventListener('dragleave', () => {
+                        imageUploadArea.classList.remove('dragover');
+                    });
+                    
+                    imageUploadArea.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        imageUploadArea.classList.remove('dragover');
+                        
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            this.handleImageUpload(files[0]);
+                        }
+                    });
+                }
+                
+                if (routeImageFile) {
+                    routeImageFile.addEventListener('change', (e) => {
+                        if (e.target.files.length > 0) {
+                            this.handleImageUpload(e.target.files[0]);
+                        }
+                    });
+                }
+                
+                if (removeImageBtn) {
+                    removeImageBtn.addEventListener('click', () => {
+                        this.clearImagePreview();
+                    });
+                }
+            }
+
+            handleImageUpload(file) {
+                // Проверка типа файла
+                if (!file.type.match('image.*')) {
+                    this.showNotification('Пожалуйста, выберите файл изображения', 'error');
+                    return;
+                }
+                
+                // Проверка размера файла (макс. 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    this.showNotification('Размер файла не должен превышать 5MB', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.routeImageData = e.target.result;
+                    this.showImagePreview(this.routeImageData);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            showImagePreview(imageData) {
+                const previewImage = document.getElementById('previewImage');
+                const imagePreview = document.getElementById('imagePreview');
+                
+                if (previewImage && imagePreview) {
+                    previewImage.src = imageData;
+                    imagePreview.style.display = 'block';
+                }
+            }
+
+            clearImagePreview() {
+                const previewImage = document.getElementById('previewImage');
+                const imagePreview = document.getElementById('imagePreview');
+                const routeImageFile = document.getElementById('routeImageFile');
+                
+                this.routeImageData = null;
+                
+                if (previewImage) previewImage.src = '';
+                if (imagePreview) imagePreview.style.display = 'none';
+                if (routeImageFile) routeImageFile.value = '';
+            }
+
+            openAuthModal() {
+                const authModal = document.getElementById('auth-modal');
+                authModal.classList.add('active');
+                
+                // Сбрасываем формы
+                document.getElementById('login-form').reset();
+                document.getElementById('register-form').reset();
+                
+                // Устанавливаем активной вкладку входа
+                document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
+                
+                document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                document.getElementById('login-form').classList.add('active');
+            }
+
+            login() {
+                const email = document.getElementById('login-email').value.trim();
+                const password = document.getElementById('login-password').value.trim();
+                
+                if (!email || !password) {
+                    this.showNotification('Пожалуйста, заполните все поля.', 'error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (!user) {
+                    this.showNotification('Неверный email или пароль.', 'error');
+                    return;
+                }
+                
+                // Сохраняем текущего пользователя
+                this.currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                };
+                
+                localStorage.setItem('mysticalBelarusCurrentUser', JSON.stringify(this.currentUser));
+                
+                // Закрываем модальное окно
+                document.getElementById('auth-modal').classList.remove('active');
+                document.getElementById('login-form').reset();
+                
+                this.updateUIAfterLogin();
+                this.updatePageUI();
+                
+                this.showNotification(`Добро пожаловать, ${user.name}!`, 'success');
+            }
+
+            register() {
+                const name = document.getElementById('register-name').value.trim();
+                const email = document.getElementById('register-email').value.trim();
+                const password = document.getElementById('register-password').value.trim();
+                const confirmPassword = document.getElementById('register-password-confirm').value.trim();
+                
+                if (!name || !email || !password || !confirmPassword) {
+                    this.showNotification('Пожалуйста, заполните все поля.', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    this.showNotification('Пароли не совпадают.', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showNotification('Пароль должен содержать не менее 6 символов.', 'error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                
+                // Проверяем, есть ли уже пользователь с таким email
+                if (users.some(u => u.email === email)) {
+                    this.showNotification('Пользователь с таким email уже зарегистрирован.', 'error');
+                    return;
+                }
+                
+                // Создаем нового пользователя
+                const newUser = {
+                    id: Date.now(),
+                    name: name,
+                    email: email,
+                    password: password
+                };
+                
+                users.push(newUser);
+                localStorage.setItem(this.usersKey, JSON.stringify(users));
+                
+                // Автоматически входим после регистрации
+                this.currentUser = {
+                    id: newUser.id,
+                    name: newUser.name,
+                    email: newUser.email
+                };
+                
+                localStorage.setItem('mysticalBelarusCurrentUser', JSON.stringify(this.currentUser));
+                
+                // Закрываем модальное окно
+                document.getElementById('auth-modal').classList.remove('active');
+                document.getElementById('register-form').reset();
+                
+                this.updateUIAfterLogin();
+                this.updatePageUI();
+                
+                this.showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`, 'success');
+            }
+
+            logout() {
+                if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                    this.currentUser = null;
+                    localStorage.removeItem('mysticalBelarusCurrentUser');
+                    
+                    // Закрываем выпадающее меню
+                    const dropdown = document.getElementById('userDropdown');
+                    if (dropdown) {
+                        dropdown.classList.remove('show');
+                    }
+                    
+                    // Обновляем интерфейс
+                    const userIcon = document.getElementById('userIcon');
+                    if (userIcon) {
+                        userIcon.classList.remove('logged-in');
+                    }
+                    
+                    this.updateUserDropdown();
+                    this.updateNavigation();
+                    this.updatePageUI();
+                    
+                    this.showNotification('Вы вышли из аккаунта.', 'success');
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                // Удаляем старые уведомления
+                const oldNotifications = document.querySelectorAll('.notification');
+                oldNotifications.forEach(notification => {
+                    notification.remove();
+                });
+                
+                // Создаем уведомление
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-close">&times;</button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Показываем уведомление
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                // Закрытие уведомления
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                });
+                
+                // Автоматическое закрытие через 5 секунд
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 300);
+                    }
+                }, 5000);
+            }
+
+            setupDemoData() {
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                
+                // Создаем демо-пользователей, если их нет
+                if (users.length === 0) {
+                    const demoUsers = [
+                        {
+                            id: 101,
+                            name: "Анна Иванова",
+                            email: "anna@example.com",
+                            password: "password123"
+                        },
+                        {
+                            id: 102,
+                            name: "Дмитрий Смирнов",
+                            email: "dmitry@example.com",
+                            password: "password123"
+                        },
+                        {
+                            id: 103,
+                            name: "Максим Петров",
+                            email: "maxim@example.com",
+                            password: "password123"
+                        }
+                    ];
+                    
+                    localStorage.setItem(this.usersKey, JSON.stringify(demoUsers));
+                }
+            }
+            
+            setupDefaultRoutes() {
+                // Предустановленные маршруты
+                this.defaultRoutes = [
+                    {
+                        id: 1001,
+                        type: 'default',
+                        name: 'Восточная мозаика: от древних храмов до стеклянных шедевров',
+                        points: 'Минск — Могилёв — Гомель — Минск',
+                        image: 'https://avatars.mds.yandex.net/i?id=f2f6400aa95e25b227713d8a18e04d7a9b70a747-10641683-images-thumbs&n=13',
+                        description: 'Откройте Беларусь с другой стороны — восточную, гостеприимную и полную сюрпризов. Этот маршрут проведет вас через величественные дворцы, один из старейших театров Европы и уникальное предприятие, где рождается хрусталь, известный на весь мир. Погрузитесь в атмосферу дворянской усадебной жизни и почувствуйте пульс Полесья.',
+                        details: [
+                            {
+                                title: 'Могилёв',
+                                image: 'https://avatars.mds.yandex.net/i?id=a883490d399dff02758b2d0c58e9e5caf9c87064-7133642-images-thumbs&n=13',
+                                description: 'В Могилёве вас ждёт атмосфера уютного губернского города с богатой историей. Поднимитесь на смотровую площадку Ратуши, чтобы полюбоваться панорамой Днепра, прогуляйтесь по пешеходной Ленинской с её старинной архитектурой и загадайте желание у необычного памятника «Звездочет». Здесь царит спокойная, почти нетронутая временем атмосфера, а мемориал «Буйничское поле» напомнит о героическом прошлом этих мест.'
+                            },
+                            {
+                                title: 'Гомель',
+                                image: 'https://avatars.mds.yandex.net/i?id=c95df57e565285689af26b44d7e759dc2351b0d2-11476564-images-thumbs&n=13',
+                                description: 'Гомель встретит вас дворцовой роскошью и элегантностью. Вы погрузитесь в атмосфер аристократической резиденции, прогуливаясь по залам дворца Румянцевых-Паскевичей и тенистым аллеям старинного парка. Величественный Петропавловский собор и готическая часовня-усыпальница создают уникальный архитектурный ансамбль, а набережная реки Сож идеальна для вечерних прогулок. Это город с особым южным шармом и ухоженными парками.'
+                            },
+                            {
+                                title: 'Минск',
+                                image: 'https://avatars.mds.yandex.net/i?id=0b117e91b66ff5468287f082522ae2af9c05987f-3605663-images-thumbs&n=13',
+                                description: 'Столица встретит вас монументальной советской архитектурой и современными ритмами жизни. Вы увидите широкие проспекты и ансамбль площади Независимости, прогуляетесь по живописному Троицкому предместью с его разноцветными домиками и ощутите контрасты времени. Обязательно посетите Национальную библиотеку — символ современной Беларуси, и Музей истории ВОВ — мощный мемориал, рассказывающий о героизме народа. Минск удивляет своим простором, чистотой и гармонией разных эпох.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 1002,
+                        type: 'default',
+                        name: 'Замковое кольцо: путешествие в средневековье',
+                        points: 'Минск — Мир — Несвиж — Минск',
+                        image: 'https://avatars.mds.yandex.net/i?id=6362a97f8d8e93345ffe5d8f190a6d24a51833ef-12406511-images-thumbs&n=13',
+                        description: 'Погрузитесь в атмосферу рыцарских турниров, княжеских балов и древних легенд. Этот маршрут проведет вас через самые знаменитые замки Беларуси, где камень дышит историей, а стены хранят многовековые тайны.',
+                        details: [
+                            {
+                                title: 'Мирский замок',
+                                image: 'https://avatars.mds.yandex.net/i?id=7a8dde0f8c397918d7c4abfbab7b4ebb4f4f77dc-10354084-images-thumbs&n=13',
+                                description: 'Величественный Мирский замок, включенный в список Всемирного наследия ЮНЕСКО, поражает своей архитектурой. Здесь вы услышите легенду о Черном Монахе, прогуляетесь по итальянскому саду и почувствуете дух эпохи Возрождения. Не пропустите подземные ходы и башни, откуда открывается потрясающий вид на окрестности.'
+                            },
+                            {
+                                title: 'Несвижский замок',
+                                image: 'https://avatars.mds.yandex.net/i?id=79f924bcb042a1d432e4081296b29724fc02f1bc-16312632-images-thumbs&n=13',
+                                description: 'Резиденция могущественного рода Радзивиллов встретит вас роскошью и величием. Исследуйте парадные залы, тайные переходы и знаменитые парки. Узнайте историю призрака Барбары Радзивилл - Белой Дамы, чей образ до сих пор будоражит воображение посетителей.'
+                            }
+                        ]
+                    }
+                ];
+                
+                this.displayDefaultRoutes();
+            }
+
+            setupSimpleFiltering() {
+                const filterAllBtn = document.getElementById('filterAll');
+                const filterUserBtn = document.getElementById('filterUser');
+                
+                if (filterAllBtn) {
+                    filterAllBtn.addEventListener('click', () => {
+                        this.currentFilter = 'all';
+                        filterAllBtn.classList.add('active');
+                        filterUserBtn.classList.remove('active');
+                        this.applyFilter();
+                    });
+                }
+                
+                if (filterUserBtn) {
+                    filterUserBtn.addEventListener('click', () => {
+                        this.currentFilter = 'user';
+                        filterUserBtn.classList.add('active');
+                        filterAllBtn.classList.remove('active');
+                        this.applyFilter();
+                    });
+                }
+            }
+
+            applyFilter() {
+                const allRoutes = document.querySelectorAll('.route-item');
+                
+                if (this.currentFilter === 'all') {
+                    // Показываем все маршруты
+                    allRoutes.forEach(route => {
+                        route.classList.remove('hidden');
+                        // Плавное появление
+                        setTimeout(() => {
+                            route.style.opacity = '1';
+                            route.style.visibility = 'visible';
+                            route.style.height = 'auto';
+                            route.style.marginBottom = '2.5rem';
+                            route.style.padding = '1.5rem';
+                            route.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                        }, 10);
+                    });
+                } else if (this.currentFilter === 'user') {
+                    // Показываем только маршруты пользователей
+                    allRoutes.forEach(route => {
+                        if (route.classList.contains('user-route')) {
+                            route.classList.remove('hidden');
+                            // Плавное появление
+                            setTimeout(() => {
+                                route.style.opacity = '1';
+                                route.style.visibility = 'visible';
+                                route.style.height = 'auto';
+                                route.style.marginBottom = '2.5rem';
+                                route.style.padding = '1.5rem';
+                                route.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                            }, 10);
+                        } else {
+                            route.classList.add('hidden');
+                            // Плавное скрытие
+                            route.style.opacity = '0';
+                            route.style.visibility = 'hidden';
+                            route.style.height = '0';
+                            route.style.marginBottom = '0';
+                            route.style.padding = '0';
+                            route.style.border = 'none';
+                        }
+                    });
+                }
+            }
+
+            displayDefaultRoutes() {
+                const container = document.getElementById('allRoutesContainer');
+                if (!container) return;
+                
+                this.defaultRoutes.forEach(route => {
+                    this.displayDefaultRoute(route, container);
+                });
+            }
+
+            displayDefaultRoute(route, container) {
+                if (!container) {
+                    container = document.getElementById('allRoutesContainer');
+                    if (!container) return;
+                }
+                
+                const routeElement = document.createElement('div');
+                routeElement.className = 'route-item';
+                routeElement.dataset.routeId = route.id;
+                
+                // Создаем HTML для деталей маршрута
+                let detailsHTML = '';
+                route.details.forEach((detail, index) => {
+                    detailsHTML += `
+                        <div class="route-detail-section">
+                            <h3>${detail.title}</h3>
+                            <div class="detail-image">
+                                <img src="${detail.image}" alt="${detail.title}">
+                            </div>
+                            <p>${detail.description}</p>
+                        </div>
+                    `;
+                });
+                
+                routeElement.innerHTML = `
+                    <h2>${route.name}</h2>
+                    <div class="route-points">
+                        <span class="route-main-points">${route.points}</span>
+                    </div>
+                    <div class="route-content">
+                        <div class="route-image">
+                            <img src="${route.image}" alt="${route.name}">
+                        </div>
+                        <div class="route-text">
+                            <p>${route.description}</p>
+                            <button class="details-btn" data-target="default-route-${route.id}">Подробнее</button>
+                        </div>
+                    </div>
+                    <div id="default-route-${route.id}" class="details-content hidden">
+                        ${detailsHTML}
+                        <button class="collapse-btn" data-target="default-route-${route.id}">Свернуть</button>
+                    </div>
+                `;
+                
+                container.appendChild(routeElement);
+            }
+            
+            updatePageUI() {
+                const addRouteSection = document.getElementById('addRouteSection');
+                
+                if (this.currentUser) {
+                    // Пользователь авторизован
+                    if (addRouteSection) {
+                        addRouteSection.style.display = 'block';
+                    }
+                    
+                    // Загружаем маршруты пользователя
+                    this.loadUserRoutes();
+                } else {
+                    // Пользователь не авторизован
+                    if (addRouteSection) {
+                        addRouteSection.style.display = 'none';
+                    }
+                    
+                    // Удаляем только пользовательские маршруты из контейнера
+                    this.removeUserRoutesFromContainer();
+                }
+                
+                // Применяем текущий фильтр
+                setTimeout(() => {
+                    this.applyFilter();
+                }, 50);
+            }
+            
+            // Функция для удаления пользовательских маршрутов из контейнера
+            removeUserRoutesFromContainer() {
+                const container = document.getElementById('allRoutesContainer');
+                if (!container) return;
+                
+                const userRoutes = container.querySelectorAll('.user-route');
+                userRoutes.forEach(route => {
+                    // Плавное удаление
+                    route.style.opacity = '0';
+                    route.style.height = '0';
+                    route.style.marginBottom = '0';
+                    route.style.padding = '0';
+                    route.style.border = 'none';
+                    route.style.overflow = 'hidden';
+                    
+                    setTimeout(() => {
+                        route.remove();
+                    }, 300);
+                });
+            }
+            
+            // Функция для получения маршрутов из localStorage
+            getRoutes() {
+                const routes = localStorage.getItem(this.routesKey);
+                return routes ? JSON.parse(routes) : [];
+            }
+            
+            // Функция для сохранения маршрутов в localStorage
+            saveRoutes(routes) {
+                localStorage.setItem(this.routesKey, JSON.stringify(routes));
+            }
+            
+            // Функция для сброса формы
+            resetRouteForm() {
+                document.getElementById('routeId').value = '';
+                document.getElementById('routeName').value = '';
+                document.getElementById('routePoints').value = '';
+                document.getElementById('routeDescription').value = '';
+                this.clearImagePreview();
+                this.routeImageData = null;
+                this.editingRouteId = null;
+                
+                const saveRouteBtn = document.getElementById('saveRouteBtn');
+                if (saveRouteBtn) {
+                    saveRouteBtn.textContent = 'Сохранить маршрут';
+                }
+            }
+            
+            // Функция для заполнения формы редактирования
+            fillRouteForm(route) {
+                document.getElementById('routeId').value = route.id;
+                document.getElementById('routeName').value = route.name;
+                document.getElementById('routePoints').value = route.points;
+                document.getElementById('routeDescription').value = route.description;
+                
+                if (route.image && route.image.startsWith('data:image')) {
+                    this.routeImageData = route.image;
+                    this.showImagePreview(route.image);
+                }
+                
+                this.editingRouteId = route.id;
+                
+                const saveRouteBtn = document.getElementById('saveRouteBtn');
+                const addRouteForm = document.getElementById('addRouteForm');
+                
+                if (saveRouteBtn) {
+                    saveRouteBtn.textContent = 'Обновить маршрут';
+                }
+                
+                if (addRouteForm && !addRouteForm.classList.contains('show')) {
+                    addRouteForm.classList.add('show');
+                }
+            }
+            
+            // Функция для сохранения/обновления маршрута
+            saveRoute() {
+                if (!this.currentUser) {
+                    this.showNotification('Для сохранения маршрута необходимо войти в систему', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const name = document.getElementById('routeName').value.trim();
+                const points = document.getElementById('routePoints').value.trim();
+                const description = document.getElementById('routeDescription').value.trim();
+                const routeId = document.getElementById('routeId').value;
+                
+                if (!name || !points || !description) {
+                    this.showNotification('Заполните обязательные поля: название, точки маршрута и описание', 'error');
+                    return;
+                }
+                
+                const routes = this.getRoutes();
+                
+                if (routeId && this.editingRouteId) {
+                    // Редактирование существующего маршрута
+                    const routeIndex = routes.findIndex(r => r.id.toString() === routeId.toString() && r.userId === this.currentUser.id);
+                    
+                    if (routeIndex !== -1) {
+                        routes[routeIndex] = {
+                            ...routes[routeIndex],
+                            name: name,
+                            points: points,
+                            description: description,
+                            updatedAt: new Date().toISOString()
+                        };
+                        
+                        // Обновляем изображение, если есть новое
+                        if (this.routeImageData) {
+                            routes[routeIndex].image = this.routeImageData;
+                        }
+                        
+                        this.saveRoutes(routes);
+                        this.showNotification('Маршрут успешно обновлен!', 'success');
+                    }
+                } else {
+                    // Создание нового маршрута
+                    const newRoute = {
+                        id: Date.now(),
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        name: name,
+                        points: points,
+                        image: this.routeImageData || 'https://images.unsplash.com/photo-1559825494-0ac2a2d670e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                        description: description,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    routes.push(newRoute);
+                    this.saveRoutes(routes);
+                    this.showNotification('Маршрут успешно добавлен!', 'success');
+                }
+                
+                // Скрываем форму и сбрасываем
+                const addRouteForm = document.getElementById('addRouteForm');
+                if (addRouteForm) {
+                    addRouteForm.classList.remove('show');
+                }
+                this.resetRouteForm();
+                
+                // Обновляем список маршрутов
+                this.loadUserRoutes();
+            }
+            
+            // Функция для удаления маршрута
+            deleteRoute(routeId) {
+                const routes = this.getRoutes();
+                const routeIndex = routes.findIndex(r => r.id.toString() === routeId.toString() && r.userId === this.currentUser.id);
+                
+                if (routeIndex !== -1) {
+                    routes.splice(routeIndex, 1);
+                    this.saveRoutes(routes);
+                    this.showNotification('Маршрут успешно удален!', 'success');
+                    this.loadUserRoutes();
+                }
+            }
+            
+            // Функция для подтверждения удаления
+            confirmDeleteRoute(routeId) {
+                this.routeToDelete = routeId;
+                const confirmModal = document.getElementById('confirmDeleteModal');
+                if (confirmModal) {
+                    confirmModal.classList.add('active');
+                }
+            }
+            
+            // Функция для загрузки маршрутов пользователей
+            loadUserRoutes() {
+                const routes = this.getRoutes();
+                const userRoutes = routes.filter(route => route.userId); // Фильтруем только пользовательские маршруты
+                
+                const container = document.getElementById('allRoutesContainer');
+                if (!container) return;
+                
+                // Удаляем старые пользовательские маршруты
+                this.removeUserRoutesFromContainer();
+                
+                // Даем время на анимацию удаления
+                setTimeout(() => {
+                    if (userRoutes.length === 0 && this.currentUser) {
+                        // Показываем заглушку только если пользователь авторизован и нет маршрутов
+                        const emptyState = document.createElement('div');
+                        emptyState.className = 'route-item user-route';
+                        emptyState.style.opacity = '0';
+                        emptyState.style.height = '0';
+                        emptyState.style.marginBottom = '0';
+                        emptyState.style.padding = '0';
+                        emptyState.style.border = 'none';
+                        emptyState.style.overflow = 'hidden';
+                        
+                        emptyState.innerHTML = `
+                            <div style="text-align: center; padding: 3rem;">
+                                <div style="font-size: 3rem; color: #8a6bb8; margin-bottom: 1rem;">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <h2>Пользовательских маршрутов пока нет</h2>
+                                <p style="color: #d8c7ff; margin-bottom: 2rem;">Будьте первым, кто создаст маршрут!</p>
+                                <button class="add-route-btn" id="emptyStateAddRouteBtn">
+                                    <i class="fas fa-plus-circle"></i> Создать маршрут
+                                </button>
+                            </div>
+                        `;
+                        
+                        container.appendChild(emptyState);
+                        
+                        // Плавное появление
+                        setTimeout(() => {
+                            emptyState.style.opacity = '1';
+                            emptyState.style.height = 'auto';
+                            emptyState.style.marginBottom = '2.5rem';
+                            emptyState.style.padding = '1.5rem';
+                            emptyState.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                        }, 10);
+                        
+                        // Добавляем обработчик для кнопки в пустом состоянии
+                        setTimeout(() => {
+                            const emptyStateBtn = document.getElementById('emptyStateAddRouteBtn');
+                            if (emptyStateBtn) {
+                                emptyStateBtn.addEventListener('click', () => {
+                                    const addRouteBtn = document.getElementById('addRouteBtn');
+                                    if (addRouteBtn) {
+                                        addRouteBtn.click();
+                                    }
+                                });
+                            }
+                        }, 10);
+                    } else {
+                        // Сортируем маршруты по дате создания (новые сверху)
+                        userRoutes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        
+                        userRoutes.forEach(route => {
+                            this.displayUserRoute(route, container);
+                        });
+                        
+                        // Плавное появление новых маршрутов
+                        setTimeout(() => {
+                            const newUserRoutes = container.querySelectorAll('.user-route');
+                            newUserRoutes.forEach((route, index) => {
+                                setTimeout(() => {
+                                    route.style.opacity = '1';
+                                    route.style.height = 'auto';
+                                    route.style.marginBottom = '2.5rem';
+                                    route.style.padding = '1.5rem';
+                                    route.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                                }, index * 50);
+                            });
+                        }, 10);
+                    }
+                    
+                    // Применяем текущий фильтр
+                    this.applyFilter();
+                }, 300);
+            }
+            
+            // Функция для отображения маршрута пользователя
+            displayUserRoute(route, container) {
+                if (!container) {
+                    container = document.getElementById('allRoutesContainer');
+                    if (!container) return;
+                }
+                
+                const routeElement = document.createElement('div');
+                routeElement.className = 'route-item user-route';
+                routeElement.dataset.routeId = route.id;
+                routeElement.style.opacity = '0';
+                routeElement.style.height = '0';
+                routeElement.style.marginBottom = '0';
+                routeElement.style.padding = '0';
+                routeElement.style.border = 'none';
+                routeElement.style.overflow = 'hidden';
+                
+                const routeDate = new Date(route.createdAt);
+                const formattedDate = routeDate.toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                // Проверяем, принадлежит ли маршрут текущему пользователю
+                const isCurrentUserRoute = this.currentUser && route.userId === this.currentUser.id;
+                
+                routeElement.innerHTML = `
+                    ${isCurrentUserRoute ? '<div class="user-route-badge">Ваш маршрут</div>' : ''}
+                    <h2>${this.escapeHtml(route.name)}</h2>
+                    <div class="route-points">
+                        <span class="route-main-points">${this.escapeHtml(route.points)}</span>
+                        <div style="color: #b8a9d9; font-size: 0.9rem; margin-top: 0.3rem;">
+                            <i class="fas fa-calendar"></i> Создан: ${formattedDate}
+                            ${route.userName ? `<br><i class="fas fa-user"></i> Автор: ${this.escapeHtml(route.userName)}` : ''}
+                        </div>
+                    </div>
+                    <div class="route-content">
+                        <div class="route-image">
+                            <img src="${route.image}" alt="${this.escapeHtml(route.name)}">
+                        </div>
+                        <div class="route-text">
+                            <p>${this.escapeHtml(route.description.length > 200 ? route.description.substring(0, 200) + '...' : route.description)}</p>
+                            <button class="details-btn" data-target="user-route-${route.id}">Подробнее</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки редактирования и удаления в карточке -->
+                    ${isCurrentUserRoute ? `
+                    <div class="route-card-actions">
+                        <button class="route-card-btn edit-card-btn" title="Редактировать маршрут">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="route-card-btn delete-card-btn" title="Удалить маршрут">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    <div id="user-route-${route.id}" class="details-content hidden">
+                        <div class="route-detail-section">
+                            <h3>Описание маршрута</h3>
+                            <div class="detail-image">
+                                <img src="${route.image}" alt="${this.escapeHtml(route.name)}">
+                            </div>
+                            <p>${this.escapeHtml(route.description)}</p>
+                            <div style="color: #b8a9d9; font-size: 0.9rem; margin-top: 1rem;">
+                                <i class="fas fa-calendar"></i> Создан: ${formattedDate}
+                                ${route.userName ? `<br><i class="fas fa-user"></i> Автор: ${this.escapeHtml(route.userName)}` : ''}
+                                ${route.updatedAt && route.updatedAt !== route.createdAt ? 
+                                    `<br><i class="fas fa-sync-alt"></i> Обновлен: ${new Date(route.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}` : 
+                                    ''}
+                            </div>
+                        </div>
+                        
+                        ${isCurrentUserRoute ? `
+                        <div class="route-actions">
+                            <button class="route-action-btn edit" title="Редактировать">
+                                <i class="fas fa-edit"></i> Редактировать
+                            </button>
+                            <button class="route-action-btn delete" title="Удалить">
+                                <i class="fas fa-trash"></i> Удалить
+                            </button>
+                        </div>
+                        ` : ''}
+                        
+                        <button class="collapse-btn" data-target="user-route-${route.id}">Свернуть</button>
+                    </div>
+                `;
+                
+                container.appendChild(routeElement);
+                
+                // Добавляем обработчики для кнопок
+                setTimeout(() => {
+                    if (isCurrentUserRoute) {
+                        // Кнопки в карточке
+                        const editCardBtn = routeElement.querySelector('.edit-card-btn');
+                        const deleteCardBtn = routeElement.querySelector('.delete-card-btn');
+                        
+                        // Кнопки в деталях
+                        const editBtn = routeElement.querySelector('.route-action-btn.edit');
+                        const deleteBtn = routeElement.querySelector('.route-action-btn.delete');
+                        
+                        if (editCardBtn) {
+                            editCardBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                this.fillRouteForm(route);
+                            });
+                        }
+                        
+                        if (deleteCardBtn) {
+                            deleteCardBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                this.confirmDeleteRoute(route.id);
+                            });
+                        }
+                        
+                        if (editBtn) {
+                            editBtn.addEventListener('click', () => {
+                                this.fillRouteForm(route);
+                            });
+                        }
+                        
+                        if (deleteBtn) {
+                            deleteBtn.addEventListener('click', () => {
+                                this.confirmDeleteRoute(route.id);
+                            });
+                        }
+                    }
+                }, 10);
+            }
+            
+            // Вспомогательная функция для экранирования HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Инициализация системы пользователей
+        let userSystem;
+
+        // Основная инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            userSystem = new UserSystem();
+            
+            // Переключение языков
+            document.querySelectorAll('.lang-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // Кнопка "Наверх" в подвале
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                backToTop.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Показ/скрытие кнопки "Наверх" при скролле
+            window.addEventListener('scroll', function() {
+                if (backToTop) {
+                    if (window.pageYOffset > 300) {
+                        backToTop.style.opacity = '1';
+                        backToTop.style.visibility = 'visible';
+                    } else {
+                        backToTop.style.opacity = '0';
+                        backToTop.style.visibility = 'hidden';
+                    }
+                }
+            });
+            
+            // Инициализация скрытия кнопки "Наверх" при загрузке
+            if (backToTop) {
+                backToTop.style.opacity = '0';
+                backToTop.style.visibility = 'hidden';
+                backToTop.style.transition = 'all 0.3s ease';
+            }
+            
+            // Обработчики для кнопок подтверждения удаления
+            const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            
+            if (cancelDeleteBtn) {
+                cancelDeleteBtn.addEventListener('click', () => {
+                    if (confirmDeleteModal) {
+                        confirmDeleteModal.classList.remove('active');
+                    }
+                    userSystem.routeToDelete = null;
+                });
+            }
+            
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', () => {
+                    if (userSystem.routeToDelete) {
+                        userSystem.deleteRoute(userSystem.routeToDelete);
+                    }
+                    if (confirmDeleteModal) {
+                        confirmDeleteModal.classList.remove('active');
+                    }
+                    userSystem.routeToDelete = null;
+                });
+            }
+            
+            // Закрытие модального окна подтверждения при клике вне его
+            window.addEventListener('click', (e) => {
+                if (e.target === confirmDeleteModal) {
+                    confirmDeleteModal.classList.remove('active');
+                    userSystem.routeToDelete = null;
+                }
+            });
+            
+            // Функциональность кнопок "Подробнее" и "Свернуть" для всех маршрутов
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('details-btn')) {
+                    const targetId = e.target.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+                    
+                    if (targetContent && targetContent.classList.contains('hidden')) {
+                        targetContent.classList.remove('hidden');
+                        e.target.textContent = 'Скрыть';
+                    } else if (targetContent) {
+                        targetContent.classList.add('hidden');
+                        e.target.textContent = 'Подробнее';
+                    }
+                }
+                
+                if (e.target.classList.contains('collapse-btn')) {
+                    const targetId = e.target.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+                    const detailsBtn = document.querySelector(`.details-btn[data-target="${targetId}"]`);
+                    
+                    if (targetContent) {
+                        targetContent.classList.add('hidden');
+                    }
+                    if (detailsBtn) {
+                        detailsBtn.textContent = 'Подробнее';
+                    }
+                }
+            });
+            
+            // Плавная прокрутка для ссылок
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            console.log('Страница маршрутов успешно загружена! Маршруты сохраняют размер при фильтрации.');
+        });
+    </script>
+</body>
+</html>

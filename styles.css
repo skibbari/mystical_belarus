@@ -1,0 +1,1008 @@
+/* Импорт современных шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1a0b2e 100%);
+    color: #e6e6fa;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Шапка */
+header {
+    background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+    padding: 2rem 1rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(74, 44, 122, 0.3);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    position: relative;
+}
+
+.logo {
+    height: 190px;
+    width: auto;
+}
+
+.language-switcher {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #8a6bb8;
+    color: #d8c7ff;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+
+.lang-btn.active {
+    background: #8a6bb8;
+    border-color: #8a6bb8;
+    color: #fff;
+}
+
+.user-icon {
+    color: #d8c7ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+}
+
+.user-icon:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Заголовки */
+.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #d8c7ff;
+    line-height: 1.6;
+}
+
+/* Навигация */
+.main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: rgba(42, 21, 85, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.nav-btn {
+    color: #e6e6fa;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-btn:hover {
+    background: rgba(138, 107, 184, 0.2);
+    border-color: #8a6bb8;
+    color: #fff;
+}
+
+/* Основной контент */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Поиск */
+.search-section {
+    margin-bottom: 2rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #8a6bb8;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    backdrop-filter: blur(10px);
+}
+
+.search-input::placeholder {
+    color: #b8a9d9;
+}
+
+/* Карта - СДВИНУТАЯ ВЛЕВО И КОМПАКТНАЯ */
+.map-section {
+    margin-bottom: 3rem;
+}
+
+.map-container {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+    max-width: 850px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* КАРТА СДВИНУТАЯ ВЛЕВО */
+#map {
+    flex: 1;
+    height: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    min-width: 0;
+}
+
+/* ОБОЗНАЧЕНИЯ - СУПЕР КОМПАКТНЫЕ */
+.map-legend {
+    width: 140px;
+    background: rgba(42, 21, 85, 0.95);
+    padding: 0.6rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    margin-top: 0;
+    border: 1px solid #8a6bb8;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.map-legend h3 {
+    margin-bottom: 0.6rem;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.legend-items {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0.3rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0;
+    padding: 0.1rem;
+}
+
+.legend-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+    border: 1px solid #fff;
+    flex-shrink: 0;
+}
+
+.legend-item span {
+    font-size: 0.75rem;
+    line-height: 1;
+    color: #e6e6fa;
+}
+
+/* Цвета квадратов */
+.legend-icon.castle { background: #8a6bb8; }
+.legend-icon.church { background: #4169e1; }
+.legend-icon.temple { background: #87ceeb; }
+.legend-icon.museum { background: #dc143c; }
+.legend-icon.point { background: #228b22; }
+
+/* Блоки контента */
+.content-block {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content-block h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+}
+
+.content-block p {
+    margin-bottom: 1rem;
+    color: #d8c7ff;
+}
+
+.preview-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 1.5rem;
+}
+
+.preview-image {
+    flex: 0 0 300px;
+}
+
+.preview-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.preview-text {
+    flex: 1;
+}
+
+.preview-text h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+}
+
+/* Кнопки */
+.details-btn, .start-btn, .collapse-btn {
+    background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.details-btn:hover, .start-btn:hover, .collapse-btn:hover {
+    background: linear-gradient(135deg, #7e57c2 0%, #8a6bb8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(138, 107, 184, 0.4);
+}
+
+.details-content {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(42, 21, 85, 0.6);
+    border-radius: 10px;
+    border-left: 4px solid #8a6bb8;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ЛЕГЕНДЫ - ИСПРАВЛЕННЫЙ КОД */
+.legend-item {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Заголовок легенды - ВЫШЕ ВСЕГО */
+.legend-item > h2 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #8a6bb8;
+    padding-bottom: 0.5rem;
+}
+
+/* ФОТО И ОПИСАНИЕ РЯДОМ */
+.legend-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.legend-image {
+    position: relative;
+    flex: 0 0 300px;
+}
+
+.legend-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.arrow-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: rgba(138, 107, 184, 0.9);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.arrow-btn:hover {
+    background: rgba(138, 107, 184, 1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-btn.prev {
+    left: 10px;
+    right: auto;
+}
+
+.legend-text {
+    flex: 1;
+}
+
+.legend-text p {
+    color: #d8c7ff;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* ПОЛНАЯ ЛЕГЕНДА - ПОД ВСЕМ КОНТЕНТОМ НА ВСЮ ШИРИНУ */
+.legend-item .details-content {
+    margin-top: 1.5rem;
+    padding: 2rem;
+    background: rgba(42, 21, 85, 0.6);
+    border-radius: 10px;
+    border-left: 4px solid #8a6bb8;
+    width: 100%;
+    clear: both;
+}
+
+.legend-item .details-content h3 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    border-bottom: 1px solid #8a6bb8;
+    padding-bottom: 0.5rem;
+}
+
+.legend-item .details-content p {
+    color: #d8c7ff;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Маршруты */
+.route-item {
+    margin-bottom: 2rem;
+}
+
+.route-points {
+    margin-bottom: 1rem;
+}
+
+.route-main-points {
+    color: #a78bfa;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.route-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.route-image {
+    position: relative;
+    flex: 0 0 300px;
+}
+
+.route-detail-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+}
+
+.route-detail-section:last-child {
+    border-bottom: none;
+}
+
+.detail-image {
+    margin: 1rem 0;
+}
+
+.detail-image img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Викторины */
+.quiz-section {
+    margin-bottom: 2rem;
+}
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.quiz-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.quiz-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.quiz-text {
+    flex: 1;
+}
+
+.quiz-text h3 {
+    color: #fff;
+    margin-bottom: 0.8rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.quiz-image {
+    flex: 0 0 100px;
+}
+
+.quiz-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Блог */
+.blog-filters {
+    margin-bottom: 2rem;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e6e6fa;
+    border: 1px solid #8a6bb8;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.filter-btn.active {
+    background: #8a6bb8;
+    border-color: #8a6bb8;
+    color: #fff;
+}
+
+.blog-post {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.blog-post:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.post-image {
+    flex: 0 0 200px;
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.post-content {
+    flex: 1;
+}
+
+.post-content h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #b8a9d9;
+}
+
+.author {
+    color: #a78bfa;
+}
+
+.category {
+    background: rgba(138, 107, 184, 0.2);
+    padding: 0.2rem 0.8rem;
+    border-radius: 15px;
+}
+
+.read-more-btn {
+    background: #8a6bb8;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background: #7e57c2;
+}
+
+/* Личный кабинет */
+.profile-section {
+    margin-bottom: 2rem;
+}
+
+.profile-header {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.avatar-container {
+    text-align: center;
+}
+
+.avatar {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #8a6bb8;
+}
+
+.change-avatar-btn {
+    background: transparent;
+    color: #8a6bb8;
+    border: 1px solid #8a6bb8;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.change-avatar-btn:hover {
+    background: rgba(138, 107, 184, 0.1);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.edit-btn {
+    background: transparent;
+    color: #8a6bb8;
+    border: 1px solid #8a6bb8;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: rgba(138, 107, 184, 0.1);
+}
+
+.profile-actions {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.create-post-btn {
+    background: #8a6bb8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.create-post-btn:hover {
+    background: #7e57c2;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    background: transparent;
+    color: #ff6b6b;
+    border: 1px solid #ff6b6b;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.user-post {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.user-post:hover {
+    transform: translateY(-5px);
+}
+
+.user-post img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.post-preview {
+    padding: 1.5rem;
+}
+
+.post-preview h3 {
+    color: #fff;
+    margin-bottom: 0.8rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.post-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: #b8a9d9;
+}
+
+.post-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-post-btn, .delete-post-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.edit-post-btn {
+    background: #4a6741;
+    color: white;
+}
+
+.delete-post-btn {
+    background: #8b0000;
+    color: white;
+}
+
+/* Модальные окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 11, 46, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #d8c7ff;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #8a6bb8;
+    color: #fff;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #a78bfa;
+}
+
+.save-btn {
+    background: #8a6bb8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.save-btn:hover {
+    background: #7e57c2;
+}
+
+/* Подвал */
+footer {
+    background: linear-gradient(135deg, #2d1b4e 0%, #1a0b2e 100%);
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-content p {
+    color: #d8c7ff;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: #b8a9d9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .language-switcher {
+        position: static;
+        transform: none;
+    }
+    
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .main-nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .map-container {
+        flex-direction: column;
+        max-width: 100%;
+        margin-left: auto;
+    }
+    
+    .map-legend {
+        width: 100%;
+        height: auto;
+        margin-top: 1rem;
+        padding: 0.8rem;
+    }
+    
+    #map {
+        height: 280px;
+    }
+    
+    .legend-items {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+    
+    .legend-item {
+        flex: 0 0 auto;
+    }
+    
+    .legend-content {
+        flex-direction: column;
+    }
+    
+    .legend-image {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    
+    .legend-image img {
+        height: 250px;
+    }
+    
+    .legend-item h2 {
+        font-size: 1.6rem;
+    }
+    
+    .details-content {
+        padding: 1.5rem;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

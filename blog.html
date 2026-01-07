@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог - Mystical Belarus</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1a0b2e 100%);
+            color: #e6e6fa; line-height: 1.5; min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ШАПКА */
+        header {
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+            padding: 1rem; text-align: center; position: relative;
+            box-shadow: 0 2px 10px rgba(74, 44, 122, 0.3);
+        }
+        .header-content {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1200px; margin: 0 auto 1rem; position: relative;
+        }
+        .logo { 
+            height: 80px; 
+            width: auto; 
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .language-switcher {
+            display: flex; gap: 0.3rem; position: absolute;
+            left: 50%; transform: translateX(-50%);
+        }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid #8a6bb8;
+            color: #d8c7ff; padding: 0.3rem 0.8rem; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+            transition: all 0.3s ease; border-radius: 15px;
+        }
+        .lang-btn.active { background: #8a6bb8; border-color: #8a6bb8; color: #fff; }
+        
+        .user-icon-container {
+            position: relative;
+        }
+        
+        .user-icon {
+            color: #d8c7ff; cursor: pointer; transition: all 0.3s ease;
+            padding: 0.5rem; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid transparent;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-icon:hover {
+            background: rgba(138, 107, 184, 0.3);
+            border-color: #8a6bb8;
+            color: #fff;
+            transform: scale(1.1);
+        }
+        
+        .user-icon.logged-in {
+            color: #8a6bb8;
+            background: rgba(138, 107, 184, 0.2);
+            border-color: #8a6bb8;
+        }
+        
+        /* Выпадающее меню пользователя */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+            border: 1px solid #8a6bb8;
+            border-radius: 10px;
+            padding: 0.8rem;
+            min-width: 220px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            margin-top: 0.5rem;
+        }
+        
+        .user-dropdown.show {
+            display: block;
+        }
+        
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            color: #d8c7ff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .user-dropdown-item:hover {
+            background: rgba(138, 107, 184, 0.3);
+            color: #fff;
+            padding-left: 1rem;
+        }
+        
+        .user-dropdown-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .user-dropdown-divider {
+            height: 1px;
+            background: rgba(138, 107, 184, 0.3);
+            margin: 0.5rem 0;
+        }
+        
+        .user-info {
+            padding: 0.8rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+        
+        .user-email {
+            font-size: 0.85rem;
+            color: #b8a9d9;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff;
+            margin-bottom: 0.5rem; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle { 
+            font-size: 0.9rem; max-width: 600px; margin: 0 auto; 
+            color: #d8c7ff; line-height: 1.4; 
+        }
+        
+        /* НАВИГАЦИЯ */
+        .main-nav {
+            display: flex; justify-content: center; gap: 1rem; padding: 0.8rem;
+            background: rgba(42, 21, 85, 0.9); backdrop-filter: blur(10px);
+        }
+        .nav-btn {
+            color: #e6e6fa; text-decoration: none; font-size: 0.9rem;
+            padding: 0.6rem 1.2rem; border: 1px solid transparent; border-radius: 20px;
+            transition: all 0.3s ease; font-weight: 500;
+        }
+        .nav-btn:hover { 
+            background: rgba(138, 107, 184, 0.3); 
+            border-color: #8a6bb8; color: #fff;
+            box-shadow: 0 0 15px rgba(138, 107, 184, 0.5);
+        }
+        .nav-btn.active {
+            background: rgba(138, 107, 184, 0.2);
+            border-color: #8a6bb8;
+            color: #fff;
+        }
+        
+        /* МОДАЛЬНЫЕ ОКНА */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 11, 46, 0.95);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #8a6bb8;
+            position: relative;
+        }
+        
+        .modal-post {
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #d8c7ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .modal h2 {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        /* Вкладки авторизации */
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        
+        .auth-tab {
+            background: none;
+            border: none;
+            color: #d8c7ff;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .auth-tab.active {
+            color: #fff;
+        }
+        
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #8a6bb8;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d8c7ff;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #8a6bb8;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #9a7bc8;
+            box-shadow: 0 0 10px rgba(138, 107, 184, 0.5);
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 107, 184, 0.4);
+        }
+        
+        /* ОСНОВНОЙ КОНТЕНТ */
+        main { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 1.5rem 1rem;
+            flex: 1;
+        }
+        
+        /* КНОПКА ДОБАВЛЕНИЯ ПУБЛИКАЦИИ */
+        .add-post-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .add-post-btn {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            color: white; border: none; padding: 0.8rem 1.5rem; 
+            cursor: pointer; border-radius: 25px; font-family: 'Montserrat', sans-serif; 
+            font-size: 1rem; transition: all 0.3s ease; font-weight: 500;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        
+        .add-post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 15px rgba(138, 107, 184, 0.4),
+                0 0 20px rgba(138, 107, 184, 0.3),
+                0 0 30px rgba(138, 107, 184, 0.2);
+            background: linear-gradient(135deg, #9a7bc8 0%, #8e67d2 100%);
+        }
+        
+        /* ФИЛЬТРЫ БЛОГА */
+        .blog-filters {
+            margin-bottom: 2rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d8c7ff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: rgba(138, 107, 184, 0.3);
+            border-color: #8a6bb8;
+            color: #fff;
+        }
+        
+        /* СТАТЬИ БЛОГА - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-post {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-post:hover .post-image img {
+            transform: scale(1.05);
+        }
+
+        .post-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        .post-content h2 {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3.2em;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #b8a9d9;
+            align-items: center;
+        }
+
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .post-category {
+            background: rgba(138, 107, 184, 0.2);
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .post-content p {
+            color: #d8c7ff;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 6em;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: #b8a9d9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            white-space: nowrap;
+        }
+
+        .like-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .like-btn.liked {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .delete-btn {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+        }
+
+        .read-more-btn {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%); 
+            color: white; 
+            border: none; 
+            padding: 0.7rem 1.5rem; 
+            cursor: pointer; 
+            border-radius: 25px; 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 0.9rem; 
+            transition: all 0.3s ease; 
+            font-weight: 500;
+            position: relative; 
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            align-self: flex-start;
+            white-space: nowrap;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 15px rgba(138, 107, 184, 0.4),
+                0 0 20px rgba(138, 107, 184, 0.3),
+                0 0 30px rgba(138, 107, 184, 0.2);
+            background: linear-gradient(135deg, #9a7bc8 0%, #8e67d2 100%);
+        }
+        
+        /* ФОРМА ДОБАВЛЕНИЯ ПУБЛИКАЦИИ */
+        .add-post-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 107, 184, 0.3);
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .add-post-form.active {
+            display: block;
+        }
+        
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(138, 107, 184, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Стили для загрузки файлов */
+        .file-upload-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d8c7ff;
+            font-size: 0.9rem;
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed #8a6bb8;
+            border-radius: 8px;
+            color: #d8c7ff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-btn:hover {
+            background: rgba(138, 107, 184, 0.2);
+            border-color: #9a7bc8;
+        }
+        
+        .file-upload-btn.has-file {
+            border: 1px solid #8a6bb8;
+            background: rgba(138, 107, 184, 0.1);
+            color: #fff;
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #b8a9d9;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .image-preview-container {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .image-preview-container.show {
+            display: block;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(138, 107, 184, 0.3);
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .upload-option-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(138, 107, 184, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #d8c7ff;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .upload-option-btn.active {
+            background: rgba(138, 107, 184, 0.2);
+            border-color: #8a6bb8;
+            color: #fff;
+        }
+        
+        .url-input-group {
+            display: none;
+            margin-top: 1rem;
+        }
+        
+        .url-input-group.show {
+            display: block;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d8c7ff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* КОНТЕНТ ПОЛНОЙ СТАТЬИ */
+        .post-full {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .post-full h2 {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+        
+        .post-full-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(138, 107, 184, 0.3);
+            font-size: 0.9rem;
+        }
+        
+        .post-full-meta span {
+            color: #b8a9d9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .post-full-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.8rem;
+        }
+        
+        .post-full-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .post-full-content {
+            color: #d8c7ff;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .post-full-content p {
+            margin-bottom: 1.2rem;
+        }
+        
+        /* КОММЕНТАРИИ */
+        .comments-section {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.3);
+        }
+        
+        .comments-title {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .comment-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .comment-form h4 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.9rem;
+            border-radius: 8px;
+            border: 1px solid rgba(138, 107, 184, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #8a6bb8;
+            box-shadow: 0 0 10px rgba(138, 107, 184, 0.3);
+        }
+        
+        .comment-form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .comment-btn {
+            background: linear-gradient(135deg, #8a6bb8 0%, #7e57c2 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .comment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 107, 184, 0.4);
+        }
+        
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .comment-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border-left: 3px solid #8a6bb8;
+            position: relative;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .comment-author {
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .comment-right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+        
+        .comment-date {
+            color: #b8a9d9;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .comment-text {
+            color: #d8c7ff;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        
+        .delete-comment-btn {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .delete-comment-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            transform: translateY(-1px);
+        }
+        
+        .no-comments {
+            text-align: center;
+            padding: 2rem;
+            color: #b8a9d9;
+            font-style: italic;
+        }
+        
+        /* СТИЛИ ДЛЯ УВЕДОМЛЕНИЙ */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2c7a 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            border: 1px solid #8a6bb8;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 1rem;
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #2d1b4e 0%, #2e7d32 100%);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #2d1b4e 0%, #c62828 100%);
+        }
+        
+        .notification.info {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1565c0 100%);
+        }
+        
+        /* ИНФОРМАЦИЯ О ПУСТОМ БЛОГЕ */
+        .empty-blog {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-blog-icon {
+            font-size: 4rem;
+            color: #8a6bb8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .empty-blog h3 {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-blog p {
+            color: #d8c7ff;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        /* КРАСИВЫЙ ПОДВАЛ */
+        footer {
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+            padding: 3rem 1rem 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.3);
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo-img {
+            height: 60px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .footer-description {
+            color: #b8a9d9;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 300px;
+        }
+        
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: #8a6bb8;
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .footer-link {
+            color: #b8a9d9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-link:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+        
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #b8a9d9;
+            font-size: 0.9rem;
+        }
+        
+        .contact-item i {
+            width: 16px;
+            text-align: center;
+            color: #8a6bb8;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(138, 107, 184, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .copyright {
+            color: #8a6bb8;
+            font-size: 0.8rem;
+        }
+        
+        .back-to-top {
+            background: rgba(138, 107, 184, 0.2);
+            border: 1px solid #8a6bb8;
+            color: #d8c7ff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-to-top:hover {
+            background: #8a6bb8;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 0.8rem; }
+            .language-switcher { position: static; transform: none; }
+            .main-title { font-size: 1.8rem; }
+            .logo { height: 60px; }
+            .main-nav { flex-wrap: wrap; gap: 0.5rem; padding: 0.6rem; }
+            .nav-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+            .blog-posts { grid-template-columns: 1fr; gap: 1.5rem; }
+            .filter-buttons { justify-content: flex-start; }
+            .add-post-form { padding: 1.5rem; }
+            .form-buttons { flex-direction: column; }
+            .modal-post { max-width: 95%; padding: 1.5rem; }
+            .post-full-image { height: 250px; }
+            .post-full h2 { font-size: 1.5rem; }
+            .comment-form-buttons { flex-direction: column; }
+            
+            .post-content h2 {
+                font-size: 1.2rem;
+                min-height: 2.8em;
+            }
+            
+            .post-meta {
+                gap: 0.3rem;
+                font-size: 0.8rem;
+            }
+            
+            .post-content p {
+                font-size: 0.9rem;
+                min-height: 5.4em;
+                -webkit-line-clamp: 3;
+            }
+            
+            .post-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+            
+            .like-btn, .delete-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.5rem;
+            }
+            
+            .read-more-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .footer-brand {
+                align-items: center;
+            }
+            
+            .footer-logo {
+                justify-content: center;
+            }
+            
+            .footer-heading::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .user-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .user-dropdown {
+                min-width: 180px;
+                right: -50%;
+            }
+            
+            .notification {
+                min-width: calc(100% - 40px);
+                max-width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+            
+            .comment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            
+            .comment-right-section {
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .comment-date {
+                white-space: normal;
+            }
+            
+            .upload-options {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auth-tabs {
+                flex-direction: column;
+            }
+            
+            .post-full-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .post-image {
+                height: 180px;
+            }
+            
+            .post-content {
+                padding: 1rem;
+            }
+            
+            .post-content h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .post-meta span {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Модальное окно авторизации -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal">
+            <button class="close-modal">&times;</button>
+            <h2>Вход / Регистрация</h2>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Вход</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            
+            <!-- Форма входа -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Введите ваш email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" placeholder="Введите пароль" required>
+                </div>
+                <button type="submit" class="modal-btn">Войти</button>
+            </form>
+            
+            <!-- Форма регистрации -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-name">Имя</label>
+                    <input type="text" id="register-name" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="Введите ваш email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" placeholder="Придумайте пароль" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Подтверждение пароля</label>
+                    <input type="password" id="register-password-confirm" placeholder="Повторите пароль" required>
+                </div>
+                <button type="submit" class="modal-btn">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра поста -->
+    <div id="post-modal" class="modal-overlay">
+        <div class="modal modal-post">
+            <button class="close-modal">&times;</button>
+            <div id="post-container">
+                <!-- Контент статьи будет загружаться динамически -->
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html"><img src="1.png" alt="Логотип Mystical Belarus" class="logo"></a>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="ru">Рус</button>
+                <button class="lang-btn" data-lang="by">Бел</button>
+                <button class="lang-btn" data-lang="en">Eng</button>
+            </div>
+            <div class="user-icon-container">
+                <div class="user-icon" id="userIcon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M20 22C20 17.5817 16.4183 14 12 14C7.58172 14 4 17.5817 4 22H20Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <!-- Выпадающее меню пользователя -->
+                <div class="user-dropdown" id="userDropdown">
+                    <!-- Содержимое будет добавлено динамически -->
+                </div>
+            </div>
+        </div>
+        <h1 class="main-title">Блог сообщества</h1>
+        <p class="subtitle">Читайте публикации других пользователей о мистических местах Беларуси</p>
+    </header>
+
+    <!-- Навигация будет обновляться динамически -->
+    <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-btn">Главная</a>
+        <a href="legends.html" class="nav-btn">Легенды</a>
+        <a href="blog.html" class="nav-btn active">Блог</a>
+        <a href="quizzes.html" class="nav-btn">Викторины</a>
+        <a href="routes.html" class="nav-btn">Маршруты</a>
+        <!-- Кнопка "Мой профиль" будет добавляться сюда при авторизации -->
+    </nav>
+
+    <main>
+        <!-- Секция для добавления новой публикации -->
+        <section class="add-post-section" id="addPostSection">
+            <!-- Кнопка добавления будет показана только для авторизованных пользователей -->
+        </section>
+
+        <!-- Форма добавления публикации -->
+        <div class="add-post-form" id="addPostForm">
+            <h2 style="color: #fff; margin-bottom: 1.5rem;">Добавить публикацию</h2>
+            <form id="postForm">
+                <div class="form-group">
+                    <label for="postTitle">Заголовок</label>
+                    <input type="text" id="postTitle" required placeholder="Введите заголовок публикации">
+                </div>
+                <div class="form-group">
+                    <label for="postCategory">Категория</label>
+                    <select id="postCategory" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="travel">Отчеты о путешествиях</option>
+                        <option value="legends">Исследования легенд</option>
+                        <option value="personal">Личные впечатления</option>
+                        <option value="tips">Советы путешественникам</option>
+                    </select>
+                </div>
+                
+                <!-- Загрузка изображения -->
+                <div class="form-group">
+                    <label>Изображение</label>
+                    <div class="upload-options">
+                        <button type="button" class="upload-option-btn active" id="uploadFromDeviceBtn">
+                            <i class="fas fa-upload"></i> Загрузить с устройства
+                        </button>
+                        <button type="button" class="upload-option-btn" id="uploadFromUrlBtn">
+                            <i class="fas fa-link"></i> Вставить ссылку
+                        </button>
+                    </div>
+                    
+                    <!-- Загрузка с устройства -->
+                    <div class="file-upload-container" id="fileUploadContainer">
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="postImageFile" class="file-upload-input" accept="image/*" required>
+                            <div class="file-upload-btn" id="fileUploadBtn">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span id="fileUploadText">Выберите или перетащите изображение</span>
+                            </div>
+                        </div>
+                        <div class="file-name" id="fileName"></div>
+                        <div class="image-preview-container" id="imagePreviewContainer">
+                            <div class="image-preview">
+                                <img id="imagePreview" src="" alt="Предпросмотр">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ввод ссылки -->
+                    <div class="url-input-group" id="urlInputGroup">
+                        <input type="url" id="postImageUrl" placeholder="https://example.com/image.jpg">
+                        <div class="image-preview-container" id="urlPreviewContainer">
+                            <div class="image-preview">
+                                <img id="urlPreview" src="" alt="Предпросмотр">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postDescription">Описание</label>
+                    <textarea id="postDescription" required placeholder="Подробно опишите ваше путешествие, находки или впечатления..."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="cancel-btn" id="cancelPost">Отмена</button>
+                    <button type="submit" class="read-more-btn" id="submitPostBtn">
+                        <i class="fas fa-paper-plane"></i> Опубликовать
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <section class="blog-filters">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Все публикации</button>
+                <button class="filter-btn" data-filter="travel">Отчеты о путешествиях</button>
+                <button class="filter-btn" data-filter="legends">Исследования легенд</button>
+                <button class="filter-btn" data-filter="personal">Личные впечатления</button>
+                <button class="filter-btn" data-filter="tips">Советы путешественникам</button>
+            </div>
+        </section>
+
+        <section class="blog-posts" id="blogPostsContainer">
+            <!-- Публикации будут загружаться динамически -->
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Бренд и описание -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="1.png" alt="Mystical Belarus" class="footer-logo-img">
+                    <div class="footer-brand-text">
+                        <h3 class="footer-title">Mystical Belarus</h3>
+                        <p class="footer-description">
+                            Откройте тайную сторону Беларуси. Исследуйте легенды, 
+                            загадочные места и мистические истории нашей страны.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Навигация -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Навигация</h4>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">
+                        <i class="fas fa-home"></i>Главная
+                    </a>
+                    <a href="legends.html" class="footer-link">
+                        <i class="fas fa-ghost"></i>Легенды
+                    </a>
+                    <a href="routes.html" class="footer-link">
+                        <i class="fas fa-route"></i>Маршруты
+                    </a>
+                    <a href="blog.html" class="footer-link">
+                        <i class="fas fa-blog"></i>Блог
+                    </a>
+                    <a href="quizzes.html" class="footer-link">
+                        <i class="fas fa-puzzle-piece"></i>Викторины
+                    </a>
+                </div>
+            </div>
+
+            <!-- Контакты -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Контакты</h4>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@mystical-belarus.by</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+375 (29) 123-45-67</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Минск, Беларусь</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Пн-Пт: 9:00-18:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2025 Mystical Belarus. Все права защищены.
+            </div>
+            <a href="#" class="back-to-top">
+                <i class="fas fa-arrow-up"></i>Наверх
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Единая система управления пользователями и публикациями
+        class BlogSystem {
+            constructor() {
+                this.postsKey = 'mysticalBelarusPosts';
+                this.likesKey = 'mysticalBelarusLikes';
+                this.usersKey = 'mysticalBelarusUsers';
+                this.imagesKey = 'mysticalBelarusImages';
+                this.currentUser = null;
+                this.currentImageData = null;
+                this.imageUploadType = 'file'; // 'file' или 'url'
+                this.init();
+            }
+
+            init() {
+                // Проверяем авторизацию из localStorage (совместимо со всеми страницами)
+                const savedUser = localStorage.getItem('mysticalBelarusCurrentUser');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.updateUIAfterLogin();
+                }
+                
+                this.setupDemoData();
+                this.loadBlogPosts();
+                this.setupEventListeners();
+                this.setupAuthEventListeners();
+                this.setupImageUploadListeners();
+                
+                // Обновляем навигацию и выпадающее меню
+                this.updateNavigation();
+                this.updateUserDropdown();
+            }
+
+            updateUserDropdown() {
+                const dropdown = document.getElementById('userDropdown');
+                if (!dropdown) return;
+                
+                if (this.currentUser) {
+                    dropdown.innerHTML = `
+                        <div class="user-info">
+                            <div class="user-name">${this.currentUser.name}</div>
+                            <div class="user-email">${this.currentUser.email}</div>
+                        </div>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="profile.html" class="user-dropdown-item">
+                            <i class="fas fa-user"></i>Мой профиль
+                        </a>
+                        <button class="user-dropdown-item" id="logout-dropdown-btn">
+                            <i class="fas fa-sign-out-alt"></i>Выйти
+                        </button>
+                    `;
+                    
+                    // Добавляем обработчики для новых элементов
+                    setTimeout(() => {
+                        const logoutBtn = document.getElementById('logout-dropdown-btn');
+                        
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener('click', () => {
+                                this.logout();
+                                dropdown.classList.remove('show');
+                            });
+                        }
+                    }, 10);
+                } else {
+                    dropdown.innerHTML = `
+                        <button class="user-dropdown-item" id="login-dropdown-btn">
+                            <i class="fas fa-sign-in-alt"></i>Войти / Зарегистрироваться
+                        </button>
+                    `;
+                    
+                    // Добавляем обработчик для кнопки входа
+                    setTimeout(() => {
+                        const loginBtn = document.getElementById('login-dropdown-btn');
+                        if (loginBtn) {
+                            loginBtn.addEventListener('click', () => {
+                                this.openAuthModal();
+                                dropdown.classList.remove('show');
+                            });
+                        }
+                    }, 10);
+                }
+            }
+
+            updateNavigation() {
+                const navContainer = document.getElementById('mainNav');
+                if (!navContainer) return;
+                
+                // Удаляем старую кнопку профиля, если есть
+                const oldProfileBtn = navContainer.querySelector('.profile-nav-btn');
+                if (oldProfileBtn) {
+                    oldProfileBtn.remove();
+                }
+                
+                // Добавляем кнопку "Мой профиль" если пользователь авторизован
+                if (this.currentUser) {
+                    const profileBtn = document.createElement('a');
+                    profileBtn.href = 'profile.html';
+                    profileBtn.className = 'nav-btn profile-nav-btn';
+                    profileBtn.textContent = 'Мой профиль';
+                    navContainer.appendChild(profileBtn);
+                }
+            }
+
+            updateUIAfterLogin() {
+                // Обновляем иконку пользователя
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon) {
+                    userIcon.classList.add('logged-in');
+                }
+                
+                // Показываем кнопку добавления публикации
+                this.showAddPostButton();
+                
+                // Обновляем выпадающее меню и навигацию
+                this.updateUserDropdown();
+                this.updateNavigation();
+                
+                // Перезагружаем посты для отображения кнопок удаления
+                this.loadBlogPosts();
+            }
+
+            showAddPostButton() {
+                const addPostSection = document.getElementById('addPostSection');
+                if (addPostSection && this.currentUser) {
+                    addPostSection.innerHTML = `
+                        <button class="add-post-btn" id="showAddPostForm">
+                            <i class="fas fa-plus"></i> Добавить публикацию
+                        </button>
+                    `;
+                    
+                    document.getElementById('showAddPostForm').addEventListener('click', () => {
+                        document.getElementById('addPostForm').classList.add('active');
+                        this.resetImageUpload();
+                    });
+                } else if (addPostSection) {
+                    addPostSection.innerHTML = `
+                        <p style="color: #d8c7ff; font-size: 0.9rem; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> Для добавления публикации необходимо 
+                            <a href="#" style="color: #8a6bb8; text-decoration: none;" id="loginFromBlogLink">войти в систему</a>
+                        </p>
+                    `;
+                    
+                    document.getElementById('loginFromBlogLink').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.openAuthModal();
+                    });
+                }
+            }
+
+            setupImageUploadListeners() {
+                // Переключение между загрузкой с устройства и ссылкой
+                const uploadFromDeviceBtn = document.getElementById('uploadFromDeviceBtn');
+                const uploadFromUrlBtn = document.getElementById('uploadFromUrlBtn');
+                const fileUploadContainer = document.getElementById('fileUploadContainer');
+                const urlInputGroup = document.getElementById('urlInputGroup');
+                const fileInput = document.getElementById('postImageFile');
+                const urlInput = document.getElementById('postImageUrl');
+                
+                // Обработка переключения способов загрузки
+                uploadFromDeviceBtn.addEventListener('click', () => {
+                    this.imageUploadType = 'file';
+                    uploadFromDeviceBtn.classList.add('active');
+                    uploadFromUrlBtn.classList.remove('active');
+                    fileUploadContainer.style.display = 'block';
+                    urlInputGroup.style.display = 'none';
+                    urlInputGroup.classList.remove('show');
+                    fileInput.required = true;
+                    urlInput.required = false;
+                });
+                
+                uploadFromUrlBtn.addEventListener('click', () => {
+                    this.imageUploadType = 'url';
+                    uploadFromUrlBtn.classList.add('active');
+                    uploadFromDeviceBtn.classList.remove('active');
+                    fileUploadContainer.style.display = 'none';
+                    urlInputGroup.style.display = 'block';
+                    urlInputGroup.classList.add('show');
+                    fileInput.required = false;
+                    urlInput.required = true;
+                });
+                
+                // Обработка загрузки файла
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        // Проверка типа файла
+                        if (!file.type.match('image.*')) {
+                            this.showNotification('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)', 'error');
+                            this.resetImageUpload();
+                            return;
+                        }
+                        
+                        // Проверка размера файла (макс. 5MB)
+                        if (file.size > 5 * 1024 * 1024) {
+                            this.showNotification('Размер файла не должен превышать 5MB', 'error');
+                            this.resetImageUpload();
+                            return;
+                        }
+                        
+                        const fileName = file.name;
+                        document.getElementById('fileName').textContent = fileName;
+                        document.getElementById('fileUploadBtn').classList.add('has-file');
+                        document.getElementById('fileUploadText').textContent = 'Файл выбран';
+                        
+                        // Отображение предпросмотра
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.currentImageData = e.target.result;
+                            const preview = document.getElementById('imagePreview');
+                            preview.src = this.currentImageData;
+                            document.getElementById('imagePreviewContainer').classList.add('show');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Drag and drop для файлов
+                const fileUploadBtn = document.getElementById('fileUploadBtn');
+                fileUploadBtn.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileUploadBtn.style.background = 'rgba(138, 107, 184, 0.2)';
+                });
+                
+                fileUploadBtn.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    fileUploadBtn.style.background = '';
+                });
+                
+                fileUploadBtn.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileUploadBtn.style.background = '';
+                    
+                    if (e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        const event = new Event('change');
+                        fileInput.dispatchEvent(event);
+                    }
+                });
+                
+                // Обработка ввода ссылки
+                urlInput.addEventListener('input', (e) => {
+                    const url = e.target.value.trim();
+                    if (url && this.isValidUrl(url)) {
+                        this.currentImageData = url;
+                        const preview = document.getElementById('urlPreview');
+                        preview.src = url;
+                        preview.onerror = () => {
+                            preview.src = 'https://via.placeholder.com/800x400/2d1b4e/8a6bb8?text=Неверная+ссылка';
+                        };
+                        document.getElementById('urlPreviewContainer').classList.add('show');
+                    } else {
+                        document.getElementById('urlPreviewContainer').classList.remove('show');
+                    }
+                });
+            }
+            
+            isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+            
+            resetImageUpload() {
+                // Сброс загрузки файла
+                document.getElementById('postImageFile').value = '';
+                document.getElementById('fileName').textContent = '';
+                document.getElementById('fileUploadBtn').classList.remove('has-file');
+                document.getElementById('fileUploadText').textContent = 'Выберите или перетащите изображение';
+                document.getElementById('imagePreviewContainer').classList.remove('show');
+                
+                // Сброс ввода ссылки
+                document.getElementById('postImageUrl').value = '';
+                document.getElementById('urlPreviewContainer').classList.remove('show');
+                
+                // Сброс данных
+                this.currentImageData = null;
+            }
+
+            loadBlogPosts() {
+                const container = document.getElementById('blogPostsContainer');
+                container.innerHTML = '';
+                
+                const allPosts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                
+                if (allPosts.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-blog">
+                            <div class="empty-blog-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h3>Публикаций пока нет</h3>
+                            <p>Будьте первым, кто поделится своими впечатлениями о мистических местах Беларуси!</p>
+                            ${this.currentUser ? 
+                                '<button class="add-post-btn" onclick="blogSystem.showAddPostForm()">Добавить публикацию</button>' : 
+                                '<button class="add-post-btn" onclick="blogSystem.openAuthModal()">Войти, чтобы добавить публикацию</button>'
+                            }
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const sortedPosts = [...allPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                sortedPosts.forEach(post => {
+                    const postElement = this.createPostElement(post);
+                    container.appendChild(postElement);
+                });
+            }
+
+            createPostElement(post) {
+                const postElement = document.createElement('div');
+                postElement.className = 'blog-post';
+                postElement.setAttribute('data-category', post.category);
+                postElement.setAttribute('data-id', post.id);
+                
+                const categoryText = this.getCategoryText(post.category);
+                const shortDescription = post.description.length > 150 
+                    ? post.description.substring(0, 150) + '...' 
+                    : post.description;
+                
+                const likedPosts = JSON.parse(localStorage.getItem(this.likesKey)) || [];
+                const isLiked = likedPosts.includes(post.id);
+                const isAuthor = this.currentUser && post.userId === this.currentUser.id;
+                
+                // Определяем источник изображения
+                let imageSrc = post.image;
+                if (post.image && post.image.startsWith('data:image')) {
+                    // Это base64 изображение
+                    imageSrc = post.image;
+                } else if (post.image && post.image.startsWith('blob:')) {
+                    // Это blob URL
+                    imageSrc = post.image;
+                }
+                
+                postElement.innerHTML = `
+                    <div class="post-image">
+                        <img src="${imageSrc}" alt="${post.title}" 
+                            onerror="this.src='https://via.placeholder.com/800x400/2d1b4e/8a6bb8?text=Изображение'">
+                    </div>
+                    <div class="post-content">
+                        <h2>${post.title}</h2>
+                        <div class="post-meta">
+                            <span class="author"><i class="fas fa-user"></i> ${post.userName}</span>
+                            <span class="date"><i class="fas fa-calendar"></i> ${new Date(post.date).toLocaleDateString('ru-RU')}</span>
+                            <span class="post-category">${categoryText}</span>
+                        </div>
+                        <p>${shortDescription}</p>
+                        <div class="post-actions">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">${post.likes || 0}</span>
+                            </button>
+                            ${isAuthor ? 
+                                `<button class="delete-btn" data-post-id="${post.id}">
+                                    <i class="fas fa-trash"></i> Удалить
+                                </button>` : 
+                                ''
+                            }
+                        </div>
+                        <button class="read-more-btn" data-post-id="${post.id}">
+                            <i class="fas fa-book-open"></i> Читать далее
+                        </button>
+                    </div>
+                `;
+                
+                return postElement;
+            }
+
+            getCategoryText(category) {
+                switch(category) {
+                    case 'travel': return 'Путешествия';
+                    case 'legends': return 'Легенды';
+                    case 'personal': return 'Впечатления';
+                    case 'tips': return 'Советы';
+                    default: return 'Без категории';
+                }
+            }
+
+            setupEventListeners() {
+                // Фильтрация статей блога
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filter = button.getAttribute('data-filter');
+                        
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        this.filterPosts(filter);
+                    });
+                });
+                
+                // Модальное окно для статей
+                const postModal = document.getElementById('post-modal');
+                const closeBtn = postModal.querySelector('.close-modal');
+                
+                closeBtn.addEventListener('click', () => {
+                    postModal.classList.remove('active');
+                });
+                
+                // Закрытие модального окна при клике на оверлей
+                window.addEventListener('click', (e) => {
+                    if (e.target === postModal) {
+                        postModal.classList.remove('active');
+                    }
+                });
+                
+                // Делегирование событий
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('read-more-btn') || e.target.closest('.read-more-btn')) {
+                        const readMoreBtn = e.target.classList.contains('read-more-btn') ? e.target : e.target.closest('.read-more-btn');
+                        const postId = parseInt(readMoreBtn.getAttribute('data-post-id'));
+                        this.loadPostContent(postId);
+                        document.getElementById('post-modal').classList.add('active');
+                    }
+                    
+                    if (e.target.closest('.like-btn')) {
+                        const likeBtn = e.target.closest('.like-btn');
+                        const postId = parseInt(likeBtn.getAttribute('data-post-id'));
+                        this.toggleLike(postId, likeBtn);
+                    }
+                    
+                    if (e.target.closest('.delete-btn')) {
+                        const deleteBtn = e.target.closest('.delete-btn');
+                        const postId = parseInt(deleteBtn.getAttribute('data-post-id'));
+                        this.deletePost(postId);
+                    }
+                    
+                    if (e.target.closest('.comment-btn')) {
+                        const commentBtn = e.target.closest('.comment-btn');
+                        const postId = parseInt(commentBtn.getAttribute('data-post-id'));
+                        this.addComment(postId);
+                    }
+                    
+                    if (e.target.closest('.delete-comment-btn')) {
+                        const deleteCommentBtn = e.target.closest('.delete-comment-btn');
+                        const postId = parseInt(deleteCommentBtn.getAttribute('data-post-id'));
+                        const commentId = parseInt(deleteCommentBtn.getAttribute('data-comment-id'));
+                        this.deleteComment(postId, commentId);
+                    }
+                });
+                
+                // Форма добавления публикации
+                const postForm = document.getElementById('postForm');
+                const cancelBtn = document.getElementById('cancelPost');
+                
+                if (postForm) {
+                    postForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.createPost();
+                    });
+                }
+                
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', () => {
+                        document.getElementById('addPostForm').classList.remove('active');
+                        postForm.reset();
+                        this.resetImageUpload();
+                    });
+                }
+                
+                // Обработчик для иконки пользователя
+                const userIcon = document.getElementById('userIcon');
+                if (userIcon) {
+                    userIcon.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        
+                        if (this.currentUser) {
+                            // Если пользователь авторизован, показываем выпадающее меню
+                            const dropdown = document.getElementById('userDropdown');
+                            dropdown.classList.toggle('show');
+                        } else {
+                            // Если не авторизован, открываем модальное окно авторизации
+                            this.openAuthModal();
+                        }
+                    });
+                }
+                
+                // Закрытие выпадающего меню при клике вне его
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('userDropdown');
+                    const userIcon = document.getElementById('userIcon');
+                    
+                    if (dropdown && !dropdown.contains(e.target) && userIcon && !userIcon.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            setupAuthEventListeners() {
+                // Переключение вкладок входа/регистрации
+                const authTabs = document.querySelectorAll('.auth-tab');
+                authTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabName = tab.getAttribute('data-tab');
+                        
+                        // Обновляем активную вкладку
+                        authTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        // Показываем соответствующую форму
+                        document.querySelectorAll('.auth-form').forEach(form => {
+                            form.classList.remove('active');
+                        });
+                        document.getElementById(`${tabName}-form`).classList.add('active');
+                    });
+                });
+                
+                // Форма входа
+                const loginForm = document.getElementById('login-form');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.login();
+                    });
+                }
+                
+                // Форма регистрации
+                const registerForm = document.getElementById('register-form');
+                if (registerForm) {
+                    registerForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.register();
+                    });
+                }
+                
+                // Закрытие модальных окон авторизации
+                const authModal = document.getElementById('auth-modal');
+                const closeAuthBtns = document.querySelectorAll('#auth-modal .close-modal');
+                
+                closeAuthBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        authModal.classList.remove('active');
+                    });
+                });
+                
+                // Закрытие модального окна при клике на оверлей
+                window.addEventListener('click', (e) => {
+                    if (e.target === authModal) {
+                        authModal.classList.remove('active');
+                    }
+                });
+            }
+
+            openAuthModal() {
+                const authModal = document.getElementById('auth-modal');
+                authModal.classList.add('active');
+                
+                // Сбрасываем формы
+                document.getElementById('login-form').reset();
+                document.getElementById('register-form').reset();
+                
+                // Устанавливаем активной вкладку входа
+                document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelector('.auth-tab[data-tab="login"]').classList.add('active');
+                
+                document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                document.getElementById('login-form').classList.add('active');
+            }
+
+            login() {
+                const email = document.getElementById('login-email').value.trim();
+                const password = document.getElementById('login-password').value.trim();
+                
+                if (!email || !password) {
+                    this.showNotification('Пожалуйста, заполните все поля.', 'error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (!user) {
+                    this.showNotification('Неверный email или пароль.', 'error');
+                    return;
+                }
+                
+                // Сохраняем текущего пользователя (совместимо со всеми страницами)
+                this.currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                };
+                
+                localStorage.setItem('mysticalBelarusCurrentUser', JSON.stringify(this.currentUser));
+                
+                // Закрываем модальное окно
+                document.getElementById('auth-modal').classList.remove('active');
+                document.getElementById('login-form').reset();
+                
+                this.updateUIAfterLogin();
+                
+                this.showNotification(`Добро пожаловать, ${user.name}!`, 'success');
+            }
+
+            register() {
+                const name = document.getElementById('register-name').value.trim();
+                const email = document.getElementById('register-email').value.trim();
+                const password = document.getElementById('register-password').value.trim();
+                const confirmPassword = document.getElementById('register-password-confirm').value.trim();
+                
+                if (!name || !email || !password || !confirmPassword) {
+                    this.showNotification('Пожалуйста, заполните все поля.', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    this.showNotification('Пароли не совпадают.', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showNotification('Пароль должен содержать не менее 6 символов.', 'error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                
+                // Проверяем, есть ли уже пользователь с таким email
+                if (users.some(u => u.email === email)) {
+                    this.showNotification('Пользователь с таким email уже зарегистрирован.', 'error');
+                    return;
+                }
+                
+                // Создаем нового пользователя
+                const newUser = {
+                    id: Date.now(),
+                    name: name,
+                    email: email,
+                    password: password
+                };
+                
+                users.push(newUser);
+                localStorage.setItem(this.usersKey, JSON.stringify(users));
+                
+                // Автоматически входим после регистрации
+                this.currentUser = {
+                    id: newUser.id,
+                    name: newUser.name,
+                    email: newUser.email
+                };
+                
+                localStorage.setItem('mysticalBelarusCurrentUser', JSON.stringify(this.currentUser));
+                
+                // Закрываем модальное окно
+                document.getElementById('auth-modal').classList.remove('active');
+                document.getElementById('register-form').reset();
+                
+                this.updateUIAfterLogin();
+                
+                this.showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`, 'success');
+            }
+
+            logout() {
+                if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                    this.currentUser = null;
+                    localStorage.removeItem('mysticalBelarusCurrentUser');
+                    
+                    // Закрываем выпадающее меню
+                    const dropdown = document.getElementById('userDropdown');
+                    if (dropdown) {
+                        dropdown.classList.remove('show');
+                    }
+                    
+                    // Обновляем интерфейс
+                    const userIcon = document.getElementById('userIcon');
+                    if (userIcon) {
+                        userIcon.classList.remove('logged-in');
+                    }
+                    
+                    this.updateUserDropdown();
+                    this.updateNavigation();
+                    this.showAddPostButton();
+                    this.loadBlogPosts();
+                    
+                    this.showNotification('Вы вышли из аккаунта.', 'success');
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                // Удаляем старые уведомления
+                const oldNotifications = document.querySelectorAll('.notification');
+                oldNotifications.forEach(notification => {
+                    notification.remove();
+                });
+                
+                // Создаем уведомление
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-close">&times;</button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Показываем уведомление
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                // Закрытие уведомления
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                });
+                
+                // Автоматическое закрытие через 5 секунд
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 300);
+                    }
+                }, 5000);
+            }
+
+            filterPosts(filter) {
+                const posts = document.querySelectorAll('.blog-post');
+                const container = document.getElementById('blogPostsContainer');
+                
+                const oldMessage = container.querySelector('.empty-category-message');
+                if (oldMessage) {
+                    oldMessage.remove();
+                }
+                
+                let visibleCount = 0;
+                posts.forEach(post => {
+                    if (filter === 'all' || post.getAttribute('data-category') === filter) {
+                        post.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+                
+                if (visibleCount === 0 && posts.length > 0) {
+                    const categoryText = this.getCategoryText(filter);
+                    const message = document.createElement('div');
+                    message.className = 'empty-blog empty-category-message';
+                    message.innerHTML = `
+                        <div class="empty-blog-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>В категории "${categoryText}" пока нет публикаций</h3>
+                        <p>Попробуйте выбрать другую категорию или посмотрите все публикации.</p>
+                        <button class="read-more-btn" onclick="blogSystem.filterPosts('all')">
+                            <i class="fas fa-list"></i> Показать все публикации
+                        </button>
+                    `;
+                    container.appendChild(message);
+                }
+            }
+
+            loadPostContent(postId) {
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const post = posts.find(p => p.id === postId);
+                const postContainer = document.getElementById('post-container');
+                
+                if (!post) {
+                    postContainer.innerHTML = '<p>Публикация не найдена.</p>';
+                    return;
+                }
+                
+                const categoryText = this.getCategoryText(post.category);
+                const comments = post.comments || [];
+                const currentUserId = this.currentUser ? this.currentUser.id : null;
+                
+                postContainer.innerHTML = `
+                    <div class="post-full">
+                        <h2>${post.title}</h2>
+                        <div class="post-full-meta">
+                            <span class="author"><i class="fas fa-user"></i> ${post.userName}</span>
+                            <span class="date"><i class="fas fa-calendar"></i> ${new Date(post.date).toLocaleDateString('ru-RU')}</span>
+                            <span class="category"><i class="fas fa-tag"></i> ${categoryText}</span>
+                        </div>
+                        <div class="post-full-image">
+                            <img src="${post.image}" alt="${post.title}" onerror="this.src='https://via.placeholder.com/800x400/2d1b4e/8a6bb8?text=Изображение'">
+                        </div>
+                        <div class="post-full-content">
+                            <p>${post.description}</p>
+                        </div>
+                        
+                        <div class="comments-section">
+                            <h3 class="comments-title">
+                                <i class="fas fa-comments"></i> Комментарии (${comments.length})
+                            </h3>
+                            
+                            ${this.currentUser ? `
+                                <div class="comment-form">
+                                    <h4>Оставить комментарий</h4>
+                                    <textarea id="comment-text-${post.id}" placeholder="Напишите ваш комментарий..." rows="4"></textarea>
+                                    <div class="comment-form-buttons">
+                                        <button type="button" class="comment-btn" data-post-id="${post.id}">
+                                            <i class="fas fa-paper-plane"></i> Отправить
+                                        </button>
+                                    </div>
+                                </div>
+                            ` : `
+                                <p style="color: #b8a9d9; text-align: center; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                                    <i class="fas fa-info-circle"></i> Чтобы оставить комментарий, необходимо 
+                                    <a href="#" style="color: #8a6bb8; text-decoration: none;" onclick="blogSystem.openAuthModal()">войти в систему</a>
+                                </p>
+                            `}
+                            
+                            <div class="comment-list">
+                                ${comments.length > 0 ? 
+                                    comments.map(comment => {
+                                        const isCommentAuthor = currentUserId && comment.userId === currentUserId;
+                                        const isPostAuthor = currentUserId && post.userId === currentUserId;
+                                        const showDeleteButton = isCommentAuthor || isPostAuthor;
+                                        
+                                        return `
+                                        <div class="comment-item">
+                                            <div class="comment-header">
+                                                <span class="comment-author">${comment.author}</span>
+                                                <div class="comment-right-section">
+                                                    <span class="comment-date">${new Date(comment.date).toLocaleDateString('ru-RU')}</span>
+                                                    ${showDeleteButton ? `
+                                                        <div class="comment-actions">
+                                                            <button class="delete-comment-btn" data-post-id="${post.id}" data-comment-id="${comment.id}">
+                                                                <i class="fas fa-trash"></i> Удалить
+                                                            </button>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
+                                            </div>
+                                            <div class="comment-text">${comment.text}</div>
+                                        </div>
+                                    `}).join('') : 
+                                    '<div class="no-comments"><i class="fas fa-comment-slash"></i> Комментариев пока нет</div>'
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            addComment(postId) {
+                if (!this.currentUser) {
+                    this.showNotification('Для добавления комментария необходимо войти в систему.', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const commentText = document.getElementById(`comment-text-${postId}`).value.trim();
+                
+                if (!commentText) {
+                    this.showNotification('Пожалуйста, введите текст комментария.', 'error');
+                    return;
+                }
+                
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const postIndex = posts.findIndex(p => p.id === postId);
+                
+                if (postIndex === -1) return;
+                
+                // Создаем новый комментарий
+                const newComment = {
+                    id: Date.now(),
+                    author: this.currentUser.name,
+                    userId: this.currentUser.id,
+                    text: commentText,
+                    date: new Date().toISOString()
+                };
+                
+                if (!posts[postIndex].comments) {
+                    posts[postIndex].comments = [];
+                }
+                
+                posts[postIndex].comments.push(newComment);
+                localStorage.setItem(this.postsKey, JSON.stringify(posts));
+                
+                // Очищаем поле ввода
+                document.getElementById(`comment-text-${postId}`).value = '';
+                
+                // Обновляем контент поста
+                this.loadPostContent(postId);
+                
+                this.showNotification('Комментарий добавлен!', 'success');
+            }
+
+            deleteComment(postId, commentId) {
+                if (!this.currentUser) {
+                    this.showNotification('Для удаления комментария необходимо войти в систему.', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const postIndex = posts.findIndex(p => p.id === postId);
+                
+                if (postIndex === -1) return;
+                
+                const post = posts[postIndex];
+                const commentIndex = post.comments.findIndex(c => c.id === commentId);
+                
+                if (commentIndex === -1) return;
+                
+                const comment = post.comments[commentIndex];
+                
+                // Проверяем, что пользователь является автором комментария или автором поста
+                const isCommentAuthor = comment.userId === this.currentUser.id;
+                const isPostAuthor = post.userId === this.currentUser.id;
+                
+                if (!isCommentAuthor && !isPostAuthor) {
+                    this.showNotification('Вы можете удалять только свои комментарии или комментарии в своих публикациях.', 'error');
+                    return;
+                }
+                
+                if (confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+                    post.comments.splice(commentIndex, 1);
+                    localStorage.setItem(this.postsKey, JSON.stringify(posts));
+                    
+                    // Обновляем контент поста
+                    this.loadPostContent(postId);
+                    
+                    this.showNotification('Комментарий удален.', 'success');
+                }
+            }
+
+            createPost() {
+                if (!this.currentUser) {
+                    this.showNotification('Для добавления публикации необходимо войти в систему.', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const title = document.getElementById('postTitle').value.trim();
+                const category = document.getElementById('postCategory').value;
+                const description = document.getElementById('postDescription').value.trim();
+                
+                if (!title || !category || !description) {
+                    this.showNotification('Пожалуйста, заполните все поля.', 'error');
+                    return;
+                }
+                
+                // Проверяем изображение
+                if (!this.currentImageData) {
+                    if (this.imageUploadType === 'file') {
+                        this.showNotification('Пожалуйста, выберите изображение.', 'error');
+                        return;
+                    } else if (this.imageUploadType === 'url') {
+                        const url = document.getElementById('postImageUrl').value.trim();
+                        if (!url || !this.isValidUrl(url)) {
+                            this.showNotification('Пожалуйста, введите корректную ссылку на изображение.', 'error');
+                            return;
+                        }
+                        this.currentImageData = url;
+                    }
+                }
+                
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const newPost = {
+                    id: Date.now(),
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    title: title,
+                    image: this.currentImageData,
+                    description: description,
+                    category: category,
+                    date: new Date().toISOString(),
+                    likes: 0,
+                    comments: []
+                };
+                
+                posts.push(newPost);
+                localStorage.setItem(this.postsKey, JSON.stringify(posts));
+                
+                // Закрываем форму и очищаем
+                document.getElementById('addPostForm').classList.remove('active');
+                document.getElementById('postForm').reset();
+                this.resetImageUpload();
+                
+                // Перезагружаем посты
+                this.loadBlogPosts();
+                
+                this.showNotification('Публикация успешно добавлена!', 'success');
+            }
+
+            toggleLike(postId, likeBtn) {
+                if (!this.currentUser) {
+                    this.showNotification('Для добавления в избранное необходимо войти в систему.', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const likedPosts = JSON.parse(localStorage.getItem(this.likesKey)) || [];
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const postIndex = posts.findIndex(p => p.id === postId);
+                
+                if (postIndex === -1) return;
+                
+                const isLiked = likedPosts.includes(postId);
+                
+                if (isLiked) {
+                    // Удаляем лайк
+                    const index = likedPosts.indexOf(postId);
+                    likedPosts.splice(index, 1);
+                    posts[postIndex].likes = Math.max(0, (posts[postIndex].likes || 0) - 1);
+                    likeBtn.classList.remove('liked');
+                } else {
+                    // Добавляем лайк
+                    likedPosts.push(postId);
+                    posts[postIndex].likes = (posts[postIndex].likes || 0) + 1;
+                    likeBtn.classList.add('liked');
+                }
+                
+                localStorage.setItem(this.likesKey, JSON.stringify(likedPosts));
+                localStorage.setItem(this.postsKey, JSON.stringify(posts));
+                
+                // Обновляем счетчик лайков
+                const likeCount = likeBtn.querySelector('.like-count');
+                if (likeCount) {
+                    likeCount.textContent = posts[postIndex].likes || 0;
+                }
+            }
+
+            deletePost(postId) {
+                if (!this.currentUser) {
+                    this.showNotification('Необходимо войти в систему.', 'error');
+                    this.openAuthModal();
+                    return;
+                }
+                
+                const posts = JSON.parse(localStorage.getItem(this.postsKey)) || [];
+                const postIndex = posts.findIndex(p => p.id === postId);
+                
+                if (postIndex === -1) return;
+                
+                const post = posts[postIndex];
+                
+                // Проверяем, что пользователь удаляет свою публикацию
+                if (post.userId !== this.currentUser.id) {
+                    this.showNotification('Вы можете удалять только свои публикации.', 'error');
+                    return;
+                }
+                
+                if (confirm('Вы уверены, что хотите удалить эту публикацию?')) {
+                    posts.splice(postIndex, 1);
+                    localStorage.setItem(this.postsKey, JSON.stringify(posts));
+                    
+                    // Удаляем лайки этой публикации
+                    const likedPosts = JSON.parse(localStorage.getItem(this.likesKey)) || [];
+                    const likeIndex = likedPosts.indexOf(postId);
+                    if (likeIndex !== -1) {
+                        likedPosts.splice(likeIndex, 1);
+                        localStorage.setItem(this.likesKey, JSON.stringify(likedPosts));
+                    }
+                    
+                    this.loadBlogPosts();
+                    this.showNotification('Публикация удалена.', 'success');
+                }
+            }
+
+            setupDemoData() {
+                const users = JSON.parse(localStorage.getItem(this.usersKey)) || [];
+                
+                // Создаем демо-пользователей, если их нет
+                if (users.length === 0) {
+                    const demoUsers = [
+                        {
+                            id: 101,
+                            name: "Анна Иванова",
+                            email: "anna@example.com",
+                            password: "password123"
+                        },
+                        {
+                            id: 102,
+                            name: "Дмитрий Смирнов",
+                            email: "dmitry@example.com",
+                            password: "password123"
+                        }
+                    ];
+                    
+                    localStorage.setItem(this.usersKey, JSON.stringify(demoUsers));
+                }
+                
+                // ВСЕГДА создаем ТОЛЬКО 4 указанных поста
+                // Удаляем все старые посты и создаем только нужные
+                const demoPosts = [
+                    {
+                        id: 1,
+                        userId: 101,
+                        userName: "Анна Иванова",
+                        title: "Ночь в заброшенной усадьбе",
+                        image: "https://avatars.mds.yandex.net/i?id=08bbe150b22ce0f8a2e1675f6c3e3b6ae0e42812-7066306-images-thumbs&n=13",
+                        description: "Темной осенней ночью я решил исследовать заброшенную усадьбу XIX века в Могилевской области. Полуразрушенные стены, заросший парк и полная луна создавали идеальную атмосферу для мистических фото. Войдя внутрь, я почувствовал странный холод, хотя на улице было достаточно тепло. На втором этаже мне удалось сделать несколько кадров, на которых позднее заметили странные светящиеся пятна. Местные жители рассказывают, что здесь обитает призрак бывшей хозяйки усадьбы, которая покончила с собой после смерти мужа. Ее фигура в белом платье иногда появляется в лунные ночи.",
+                        category: "travel",
+                        date: new Date(2025, 2, 20).toISOString(),
+                        likes: 15,
+                        comments: []
+                    },
+                    {
+                        id: 2,
+                        userId: 101,
+                        userName: "Анна Иванова",
+                        title: "Белая дама",
+                        image: "https://avatars.mds.yandex.net/get-shedevrum/15247318/img_815099862cfc11f08388e69b4fc2796a/orig",
+                        description: "Легенды о Белой Даме существуют во многих замках Беларуси, но именно в Гродненской области мне удалось собрать самые интересные свидетельства. Местные старожилы рассказывают, что призрак молодой женщины в белом появляется перед важными событиями в жизни замков. Во время своего исследования я посетил 5 различных локаций и записал интервью с местными жителями. Самый яркий случай произошел в 1998 году, когда сторож одного из замков видел Белую Даму, проходящую через стену. Несколько дней спустя в замке случился пожар. Это существо не агрессивно, но его появление всегда предвещает перемены.",
+                        category: "legends",
+                        date: new Date(2025, 2, 18).toISOString(),
+                        likes: 22,
+                        comments: []
+                    },
+                    {
+                        id: 3,
+                        userId: 102,
+                        userName: "Дмитрий Смирнов",
+                        title: "Несвижский замок: путешествие во времени",
+                        image: "https://avatars.mds.yandex.net/i?id=9e37a5357a9c4210e8935b6692de92218b8520ea-8273295-images-thumbs&n=13",
+                        description: "Несвижский замок — это не просто памятник архитектуры, это портал в прошлое. Во время экскурсии я ощутил, как время замедляется. Каждый зал, каждый коридор хранит память о Радзивиллах. Особенно впечатлили подземные ходы, о которых ходят легенды. Говорят, что здесь до сих пор бродит призрак Черной Дамы — Барбары Радзивилл. В Золотом зале мне удалось сделать уникальный снимок: на фото отчетливо видно странное свечение в углу комнаты. Экскурсовод рассказала, что многие посетители чувствуют здесь присутствие чего-то необъяснимого. Советую посещать замок в будние дни, когда меньше туристов — атмосфера более аутентичная.",
+                        category: "travel",
+                        date: new Date(2025, 2, 15).toISOString(),
+                        likes: 31,
+                        comments: []
+                    },
+                    {
+                        id: 4,
+                        userId: 102,
+                        userName: "Дмитрий Смирнов",
+                        title: "Ночное посещение Гольшанского замка",
+                        image: "https://avatars.mds.yandex.net/i?id=42ed0259200d2c49822fb82adf4830d4d58fe7ee-9701815-images-thumbs&n=13",
+                        description: "Гольшанский замок, известный также как Черный замок, ночью выглядит особенно загадочно. Мы приехали с группой энтузиастов в полнолуние. Руины замка освещались холодным лунным светом, создавая сюрреалистическую картину. По легенде, здесь замуровали монаха в стене за нарушение обета безбрачия. Местные утверждают, что его призрак до сих пор бродит по развалинам. Во время нашего визита мы записали несколько странных звуков: шаги, когда рядом никого не было, и тихий шепот. На одной из фотографий мы заметили туманную фигуру в монашеском одеянии. Это место обладает сильной энергетикой — не рекомендуется посещать его в одиночку.",
+                        category: "personal",
+                        date: new Date(2025, 2, 12).toISOString(),
+                        likes: 18,
+                        comments: []
+                    }
+                ];
+                
+                // ВАЖНО: ВСЕГДА сохраняем только эти 4 поста
+                localStorage.setItem(this.postsKey, JSON.stringify(demoPosts));
+                
+                // Очищаем лайки, чтобы удалить старые
+                localStorage.setItem(this.likesKey, JSON.stringify([]));
+            }
+
+            showAddPostForm() {
+                document.getElementById('addPostForm').classList.add('active');
+            }
+        }
+
+        // Инициализация системы
+        const blogSystem = new BlogSystem();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Переключение языков
+            document.querySelectorAll('.lang-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Кнопка "Наверх" в подвале
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                backToTop.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                window.addEventListener('scroll', function() {
+                    if (backToTop) {
+                        if (window.pageYOffset > 300) {
+                            backToTop.style.opacity = '1';
+                            backToTop.style.visibility = 'visible';
+                        } else {
+                            backToTop.style.opacity = '0';
+                            backToTop.style.visibility = 'hidden';
+                        }
+                    }
+                });
+                
+                backToTop.style.opacity = '0';
+                backToTop.style.visibility = 'hidden';
+                backToTop.style.transition = 'all 0.3s ease';
+            }
+        });
+    </script>
+</body>
+</html>
